@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "baseUrl": ".",
+    "paths": {
+      "@*": ["src/*"],
+      "@api": ["src/api"],
+      "@assets": ["src/assets"],
+      "@components": ["src/components"],
+      "@hooks": ["src/hooks"],
+      "@navigation": ["src/navigation"],
+      "@redux": ["src/redux"],
+      "@screens": ["src/screens"],
+      "@constants": ["src/constants"],
+      "@types": ["src/types"],
+      "@context": ["src/context"],
+    }
+  },
+  "extends": "expo/tsconfig.base"
+}
