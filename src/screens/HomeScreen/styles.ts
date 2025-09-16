@@ -4,6 +4,7 @@ export const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     alignItems: 'center',
+    backgroundColor: "#DDDDDD",
   },
   header: {
     flexDirection: 'row',

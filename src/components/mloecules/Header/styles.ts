@@ -3,11 +3,10 @@ import Constants from 'expo-constants';
 
 export const styles = StyleSheet.create({
   header: {
-    paddingTop: Constants.statusBarHeight,
     flexDirection: 'row-reverse',
     justifyContent: 'space-between',
     width: '100%',
-    backgroundColor: '#DDDDDD',
+    backgroundColor: "#DDDDDD",
   },
   iconContainer: {
     alignItems: 'center',

@@ -6,9 +6,12 @@ import { styles } from './styles';
 
 export const HomeScreen = ({ navigation }) => {
   return (
-    <BaseLayout>
+    <View style={{
+      flex: 1,
+      backgroundColor: '#DDDDDD'
+    }}>
+      <Header />
       <ScrollView contentContainerStyle={styles.container}>
-        <Header />
         <View style={styles.welcomeSection}>
           <Image
             source={require('@assets/images/banner.png')}
@@ -16,7 +19,7 @@ export const HomeScreen = ({ navigation }) => {
           />
           <Text style={styles.welcomeText}>مرحباً بكم</Text>
           <Text style={styles.description}>
-            بيع و اشتري بكل سهولة من تطبيق سيارات العراق
+            بيع و اشتري بكل سهولة من تطبيق سيارات و آليات العراق
           </Text>
         </View>
 
@@ -32,7 +35,9 @@ export const HomeScreen = ({ navigation }) => {
             paddingHorizontal: 30,
           }}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('ListScreen')}
+              onPress={() => navigation.navigate('ListScreen', {
+                type: 'buy'
+              })}
               style={{
                 flexDirection: 'row'
               }}>
@@ -45,7 +50,7 @@ export const HomeScreen = ({ navigation }) => {
 
           <View style={styles.buttonsContainer}>
             <Categorey
-              onPress={() => navigation.navigate('CarFormScreen', { type: 'exchange' })}
+              onPress={() => navigation.navigate('ListScreen', { type: 'exchange' })}
               text={'آراوس سيارتي'}
               icon={require('@assets/images/handshake.png')}
             />
@@ -75,7 +80,9 @@ export const HomeScreen = ({ navigation }) => {
             paddingHorizontal: 30,
           }}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('ListScreen')}
+              onPress={() => navigation.navigate('ListScreen', {
+                type: 'buy'
+              })}
               style={{
                 flexDirection: 'row'
               }}>
@@ -94,7 +101,7 @@ export const HomeScreen = ({ navigation }) => {
                   type: 'sell'
                 })
               }}
-              text={'ابيع آلتي'}
+              text={'ابيع آليتي'}
               icon={require('@assets/images/bulldozer.png')} />
             <Categorey
               onPress={() => {
@@ -102,11 +109,11 @@ export const HomeScreen = ({ navigation }) => {
                   type: 'buy'
                 })
               }}
-              text={' شتري آلية'}
+              text={' اشتري آلية'}
               icon={require('@assets/images/louder.png')} />
           </View>
         </View>
       </ScrollView>
-    </BaseLayout >
+    </View >
   );
 };

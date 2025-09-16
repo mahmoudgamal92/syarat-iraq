@@ -35,7 +35,7 @@ export const SplashScreen = ({ navigation }) => {
             <View style={styles.container}>
                 {/* Animated Header */}
                 <Animated.Text style={[styles.header, headerStyle]}>
-                    هلا فيك بتطبيق سيارات العراق 🚀
+                    هلا بيك بتطبيق سيارات و آليات العراق 🚀
                 </Animated.Text>
 
                 {/* Lottie Animation */}
@@ -70,7 +70,9 @@ export const SplashScreen = ({ navigation }) => {
 
                     {/* Bottom text */}
                     <View style={styles.bottomTextContainer}>
-                        <Text style={styles.bottomText}>اكتشف سياراتك المفضلة الآن!</Text>
+                        <Text style={styles.bottomText}>
+                            أسهل وأفضل تطبيق للسيارات والآليات في العراق !
+                        </Text>
                     </View>
                 </View>
             </View>
@@ -94,13 +96,13 @@ const styles = StyleSheet.create({
     },
     bottomTextContainer: {
         position: 'absolute',
-        bottom: 10,
+        bottom: 40,
         width: '100%',
         alignItems: 'center',
     },
     bottomText: {
         color: '#fff',
-        fontSize: 20,
+        fontSize: 18,
         fontFamily: 'Bold',
         textAlign: 'center',
     },

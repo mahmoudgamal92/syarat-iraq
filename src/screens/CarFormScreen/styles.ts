@@ -33,7 +33,7 @@ export const styles = StyleSheet.create({
     color: '#5C4CF2',
     textAlign: 'center',
     fontSize: 16,
-    marginBottom: 20,
+    marginBottom: 10,
     fontFamily: "Regular"
   },
   formContainer: {

@@ -10,7 +10,7 @@ import { BaseLayout, Dropdown, Header, ValidationError } from '@components';
 import { OptionsSheetRef, OptionsSheet } from './components';
 import { styles } from './styles';
 import { getValidationSchema, initialValues } from './const';
-import { countries, clinders, carStatus } from '@constants';
+import { countries, clinders, carStatus, cities } from '@constants';
 
 export const CarFormScreen = ({ route }) => {
   const { type } = route?.params ?? {};
@@ -104,17 +104,28 @@ export const CarFormScreen = ({ route }) => {
   return (
     <BaseLayout>
       <View style={styles.container}>
-        <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
         <Header />
         <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 10 }}>
+          <Text style={styles.instructions}>
+            {type === 'buy' ?
+              'تدور علي سياره ؟؟'
+              : type === 'exchange'
+                ? 'تريد تراوس سيارتك'
+                : 'أعرض سيارتك للبيع'
+            }
+          </Text>
+
 
           <Text style={styles.instructions}>
             {type === 'buy'
-              ? 'اعرض طلبك لشراء سيارة جديدة\nاتبع الخطوات المطلوبة لرفع الطلب'
-              : type === 'exchange'
-                ? 'اعرض سيارتك للمبادلة\nاتبع الخطوات المطلوبة لرفع الطلب'
-                : 'اعرض سيارتك الجديدة للبيع\nاتبع الخطوات المطلوبة لرفع الطلب'}
+              ? 'حدد التفاصيل في الأسفل ودوس على زر البحث'
+              : type === 'exchange' ?
+                'حدد التفاصيل في الأسفل ودوس على زر البحث'
+                : 'أكمل التفاصيل في الأسفل'
+            }
           </Text>
+
+
 
           {/* Car Status */}
           {/* <View style={{
@@ -162,7 +173,7 @@ export const CarFormScreen = ({ route }) => {
               data={models}
               labelField="name"
               valueField="id"
-              placeholder="الموديل"
+              placeholder="الفئة"
               value={formik.values.modalId}
               onChange={item => formik.setFieldValue("modalId", item.id)}
             />
@@ -237,21 +248,25 @@ export const CarFormScreen = ({ route }) => {
           {/* Board Number & Location */}
           <ValidationError<CarRequest> formik={formik} fields={['carNumber', 'carLocation']} />
           <View style={styles.row}>
-            <TextInput
-              style={styles.input}
+            <Dropdown
+              data={cities}
+              labelField="label"
+              valueField="value"
               placeholder="رقم اللوحه"
               value={formik.values.carNumber}
-              onChangeText={formik.handleChange("carNumber")}
-              keyboardType='numeric'
-              placeholderTextColor={'#999'}
+              onChange={item => formik.setFieldValue("carNumber", item.value)}
             />
-            <TextInput
-              style={styles.input}
+
+
+            <Dropdown
+              data={cities}
+              labelField="label"
+              valueField="value"
               placeholder="مكان التواجد"
               value={formik.values.carLocation}
-              onChangeText={formik.handleChange("carLocation")}
-              placeholderTextColor={'#999'}
+              onChange={item => formik.setFieldValue("carLocation", item.value)}
             />
+
           </View>
 
           {/* Conditional fields for buy */}
@@ -261,7 +276,7 @@ export const CarFormScreen = ({ route }) => {
               <View style={styles.row}>
                 <TextInput
                   style={styles.input}
-                  placeholder="من سنه"
+                  placeholder="الموديل من "
                   value={formik.values.fromYear}
                   onChangeText={formik.handleChange("fromYear")}
                   keyboardType="numeric"
@@ -270,7 +285,7 @@ export const CarFormScreen = ({ route }) => {
                 />
                 <TextInput
                   style={styles.input}
-                  placeholder="الي سنه"
+                  placeholder="الموديل الي"
                   value={formik.values.toYear}
                   onChangeText={formik.handleChange("toYear")}
                   keyboardType="numeric"
@@ -392,7 +407,9 @@ export const CarFormScreen = ({ route }) => {
                   justifyContent: 'center'
                 }}>
                   <Ionicons name="image-outline" size={60} color="grey" />
-                  <Text style={{ color: "grey" }}>قم برفع الصور بحد اقصي ٥ صور</Text>
+                  <Text style={{ color: 'grey', fontFamily: 'Regular' }}>
+                    قم برفع الصور بحد اقصي 15 صوره
+                  </Text>
                 </TouchableOpacity>
               )}
             </View>
@@ -403,19 +420,36 @@ export const CarFormScreen = ({ route }) => {
             <View style={styles.formContainer}>
               <TouchableOpacity onPress={() => optionsRef.current?.open()} style={{ alignItems: 'center' }}>
                 <FontAwesome5 name='car' size={60} color="grey" />
-                <Text style={{ color: 'grey' }}>قم باختيار باقي مواصفات السياره</Text>
+                <Text style={{ color: 'grey', fontFamily: 'Regular' }}>قم باختيار باقي مواصفات السياره</Text>
               </TouchableOpacity>
             </View>
           )}
 
+          {type === 'buy' && (
+            <Text style={{
+              fontFamily: 'Regular',
+              color: 'grey',
+              textAlign: 'right',
+              fontSize: 12,
+            }}>
+              يمكنك بدء البحث بعد تحديد العلامة التجارية والفئة والموديل فقط  ويمكنك البحث بتحديد كل الإختيارات الظاهرة
+            </Text>
+          )}
+
           {/* Submit */}
           <TouchableOpacity style={styles.uploadButton} onPress={() => formik.handleSubmit()}>
-            {loading ? <ActivityIndicator color="#FFF" size="large" /> : <Text style={styles.uploadButtonText}>ارسال الطلب</Text>}
+            {loading ? <ActivityIndicator color="#FFF" size="large" /> :
+              <Text style={styles.uploadButtonText}>
+
+                {type === 'buy' ? 'اضغط هنا للبحث' : type === 'exchange' ? 'اضغط هنا لارسال الطلب' : 'اضغط هنا لارسال الطلب'}
+              </Text>
+
+            }
           </TouchableOpacity>
         </ScrollView>
 
         <OptionsSheet ref={optionsRef} data={carDetails} />
-      </View>
-    </BaseLayout>
+      </View >
+    </BaseLayout >
   );
 };

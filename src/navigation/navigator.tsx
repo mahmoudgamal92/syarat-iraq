@@ -2,6 +2,7 @@ import * as React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { BottomTabs } from "@navigation/tabs";
 import { CarFormScreen, ListScreen, VehicleFormScreen, VehicleTypeScreen, SplashScreen } from '@screens';
+import { BaseLayout } from '@components';
 
 export const AppStack = () => {
     const HomeStack = createStackNavigator();
@@ -11,7 +12,7 @@ export const AppStack = () => {
             initialRouteName="SplashScreen"
             screenOptions={{
                 headerShown: false,
-                cardStyle: { backgroundColor: '#FFFFFF' },
+                cardStyle: { backgroundColor: '#FFF' },
 
             }}
         >
@@ -22,7 +23,6 @@ export const AppStack = () => {
             <HomeStack.Screen name="VehicleTypeScreen" component={VehicleTypeScreen} />
             <HomeStack.Screen name="ListScreen" component={ListScreen} />
         </HomeStack.Navigator>
-
     );
 };
 

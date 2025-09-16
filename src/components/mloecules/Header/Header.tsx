@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Linking } from 'react-native';
 import { MaterialIcons, FontAwesome6, Feather, FontAwesome } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+import { Link, useNavigation } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
 
 import { styles } from './styles';
@@ -31,10 +31,10 @@ export const Header = () => {
 
 
       <View style={styles.carIconContainer}>
-        <TouchableOpacity style={styles.HeaderIcon}>
+        <TouchableOpacity style={styles.HeaderIcon} onPress={() => { Linking.openURL(`tel:+9647740222828`) }}>
           <Feather name="phone-call" size={24} color="#FFFFFF" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.HeaderIcon}>
+        <TouchableOpacity style={styles.HeaderIcon} onPress={() => { Linking.openURL(`https://wa.me/${'+9647740222828'}`) }}>
           <FontAwesome name="whatsapp" size={24} color="#FFFFFF" />
         </TouchableOpacity>
       </View>

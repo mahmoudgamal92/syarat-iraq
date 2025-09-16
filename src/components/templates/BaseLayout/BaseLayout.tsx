@@ -1,5 +1,6 @@
 import React, { ReactNode } from "react";
-import { View, StatusBar, StyleSheet, SafeAreaView } from "react-native";
+import { View, StatusBar, StyleSheet, SafeAreaView, Platform } from "react-native";
+import Constants from 'expo-constants';
 
 interface BaseLayoutProps {
     children: ReactNode;
@@ -9,24 +10,17 @@ interface BaseLayoutProps {
 
 export const BaseLayout: React.FC<BaseLayoutProps> = ({
     children,
-    backgroundColor = "#fff",
-    barStyle = "dark-content",
+    backgroundColor = "#DDDDDD",
 }) => {
     return (
-        <SafeAreaView style={[styles.safeArea, { backgroundColor }]}>
-            <StatusBar translucent backgroundColor="transparent" barStyle={barStyle} />
-            <View style={[styles.container, { backgroundColor }]}>
-                {children}
-            </View>
-        </SafeAreaView>
+        <View style={[styles.safeArea, { backgroundColor, paddingTop: Constants.statusBarHeight }]}>
+            {children}
+        </View>
     );
 };
 
 const styles = StyleSheet.create({
     safeArea: {
-        flex: 1,
-    },
-    container: {
         flex: 1,
     },
 });

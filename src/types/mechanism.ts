@@ -9,8 +9,8 @@ export interface MechanismRequest {
     mechanismStatus: number; // 1 = كلين, 2 = بدون حادث, 3 = بها حادث
     mechanismLocation: string;
     mechanismNumber: string;
-    mechanismOdometer: number;
-    mechanismPrice: number;
+    mechanismOdometer: string;
+    mechanismPrice: string;
     phoneNumber: string;
     mechanismImages: string; // base64 string or URL
 }

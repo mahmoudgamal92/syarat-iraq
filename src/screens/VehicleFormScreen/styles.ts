@@ -59,7 +59,7 @@ export const styles = StyleSheet.create({
   uploadButtonText: {
     color: '#fff',
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: 'Regular',
   },
   footer: {
     flexDirection: 'row',

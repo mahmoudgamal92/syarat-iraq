@@ -6,7 +6,7 @@ import { CarRequest } from '@types';
 export const getValidationSchema = (type: string) => {
     return Yup.object().shape({
         brandId: Yup.string().required("اختر العلامة التجارية"),
-        modalId: Yup.string().required("اختر الموديل"),
+        modalId: Yup.string().required("اختر الفئة"),
         carEngineSizeId: Yup.string().required("اختر حجم المحرك"),
         cvtTypeId: Yup.string().required("اختر نوع الكير"),
         carImportCountry: Yup.string().required("اختر البلد الوارد منها السيارة"),
@@ -29,7 +29,7 @@ export const getValidationSchema = (type: string) => {
 
 export const initialValues: CarRequest = {
     carStatus: 0,            // number
-    carType: 0,              // number
+    // carType: 0,              // number
     brandId: "",             // string (ID)
     modalId: "",             // string (ID)
     carEngineSizeId: "",     // string (ID)

@@ -12,8 +12,8 @@ export const initialValues: MechanismRequest = {
     mechanismStatus: 0,        // 1 = كلين, 2 = بدون حادث, 3 = بها حادث
     mechanismLocation: "",
     mechanismNumber: "",
-    mechanismOdometer: 0,
-    mechanismPrice: 0,
+    mechanismOdometer: "",
+    mechanismPrice: "",
     phoneNumber: "",
     mechanismImages: "",    // base64 string or URL
 };

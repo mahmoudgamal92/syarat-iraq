@@ -1,10 +1,11 @@
+import { colors } from "@constants/colors";
 import { StyleSheet } from "react-native";
 
 
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#FFF'
+        backgroundColor: '#DDDDDD'
     },
     header: {
         flexDirection: "row",
@@ -16,7 +17,7 @@ export const styles = StyleSheet.create({
         marginHorizontal: 10,
     },
     card: {
-        backgroundColor: "#DDDDDD",
+        backgroundColor: "#eeeeee",
         margin: 10,
         borderRadius: 10,
         padding: 10,
@@ -37,6 +38,12 @@ export const styles = StyleSheet.create({
         fontFamily: 'Regular'
 
     },
+    carHint: {
+        color: "#555",
+        fontSize: 14,
+        marginBottom: 5,
+        fontFamily: 'Regular'
+    },
     info: {
         color: "#000",
         marginBottom: 3,
@@ -48,10 +55,11 @@ export const styles = StyleSheet.create({
         fontFamily: 'Regular'
     },
     carImage: {
-        width: 100,
-        height: 100,
+        width: '100%',
+        height: '100%',
         borderRadius: 10,
         marginLeft: 10,
+        resizeMode: 'contain'
     },
     footer: {
         flexDirection: "row",
@@ -60,7 +68,7 @@ export const styles = StyleSheet.create({
         marginTop: 10,
     },
     price: {
-        color: "#fff",
+        color: colors.light.purple,
         fontSize: 16,
         fontWeight: "bold",
     },
