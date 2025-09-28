@@ -1,11 +1,13 @@
 import { request } from '@network';
 import { CarRequest } from '@types';
 
-export const carListService = async (params: CarRequest) => {
+export const carListService = async (body: CarRequest) => {
     const res = request({
         method: 'post',
-        path: '/CarRequest',
-        params: { ...params }
+        path: '/SearchCars',
+        data: {
+            ...body
+        }
     }
     );
     return res;

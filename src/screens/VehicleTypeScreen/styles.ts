@@ -42,15 +42,18 @@ export const styles = StyleSheet.create({
   },
   button: {
     width: '45%',
-    paddingVertical: 15,
+    paddingVertical: 10,
     borderRadius: 10,
     marginVertical: 5,
     alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center'
   },
   buttonText: {
     color: 'white',
     fontSize: 16,
     fontFamily: 'Bold',
+    paddingHorizontal: 10
   },
   footer: {
     flexDirection: 'row',

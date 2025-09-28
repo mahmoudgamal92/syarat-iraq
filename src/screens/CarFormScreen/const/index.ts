@@ -3,33 +3,53 @@ import * as Yup from 'yup';
 import { CarRequest } from '@types';
 
 
+const buySchema = Yup.object().shape({
+    brandId: Yup.string().required("اختر العلامة التجارية"),
+    modalId: Yup.string().required("اختر الفئة"),
+    carEngineSizeId: Yup.string().required("اختر حجم المحرك"),
+});
+
+const exchangeSchema = Yup.object().shape({
+    brandId: Yup.string().required("اختر العلامة التجارية"),
+    modalId: Yup.string().required("اختر الفئة"),
+    carEngineSizeId: Yup.string().required("اختر حجم المحرك"),
+});
+
+const sellSchema = Yup.object().shape({
+    brandId: Yup.string().required("اختر العلامة التجارية"),
+    modalId: Yup.string().required("اختر الفئة"),
+    carEngineSizeId: Yup.string().required("اختر حجم المحرك"),
+    cvtTypeId: Yup.string().required("اختر نوع الكير"),
+    carImportCountry: Yup.string().required("اختر البلد الوارد منها السيارة"),
+    gasTypeId: Yup.string().required("اختر نوع الوقود"),
+    carStatus: Yup.number().required("اختر حالة السيارة").min(1, "اختر حالة السيارة"),
+    carNumber: Yup.string().required("ادخل رقم اللوحة"),
+    carLocation: Yup.string().required("ادخل مكان التواجد"),
+    carYear: Yup.number().required("ادخل سنة الصنع"),
+    clinderNumber: Yup.number().required("ادخل عدد السلندرات"),
+    carOdometer: Yup.number().required("ادخل عدد الكيلومترات").min(0, "عدد الكيلومترات يجب أن يكون أكبر من صفر"),
+    carPrice: Yup.number().required("ادخل السعر").min(0, "السعر يجب أن يكون أكبر من صفر"),
+    phoneNumber: Yup.string().required("ادخل رقم الهاتف"),
+    //carImages: Yup.array().min(1, "اختر صورة واحدة على الأقل"),
+});
+
 export const getValidationSchema = (type: string) => {
-    return Yup.object().shape({
-        brandId: Yup.string().required("اختر العلامة التجارية"),
-        modalId: Yup.string().required("اختر الفئة"),
-        carEngineSizeId: Yup.string().required("اختر حجم المحرك"),
-        cvtTypeId: Yup.string().required("اختر نوع الكير"),
-        carImportCountry: Yup.string().required("اختر البلد الوارد منها السيارة"),
-        gasTypeId: Yup.string().required("اختر نوع الوقود"),
-        carStatus: Yup.number().required("اختر حالة السيارة").min(1, "اختر حالة السيارة"),
-        carType: Yup.number().required("اختر نوع السيارة").min(1, "اختر نوع السيارة"),
-        carNumber: Yup.string().required("ادخل رقم اللوحة"),
-        carLocation: Yup.string().required("ادخل مكان التواجد"),
-        carYear: type !== "buy" ? Yup.number().required("ادخل سنة الصنع") : Yup.number().nullable(),
-        clinderNumber: Yup.number().required("ادخل عدد السلندرات"),
-        carOdometer: Yup.number().required("ادخل عدد الكيلومترات").min(0, "عدد الكيلومترات يجب أن يكون أكبر من صفر"),
-        carPrice: type !== "exchange" ? Yup.number().required("ادخل السعر").min(0, "السعر يجب أن يكون أكبر من صفر") : Yup.number().nullable(),
-        phoneNumber: type !== "buy" ? Yup.string().required("ادخل رقم الهاتف") : Yup.string().nullable(),
-        replaceByBrandId: type === "exchange" ? Yup.string().required("ادخل السيارة المراد المبادلة بها") : Yup.string().nullable(),
-        replaceByModalId: type === "exchange" ? Yup.string().required("ادخل السيارة المراد المبادلة بها") : Yup.string().nullable(),
-        carImages: Yup.array().min(1, "اختر صورة واحدة على الأقل"),
-    });
+    switch (type) {
+        case "sell":
+            return sellSchema;
+        case "buy":
+            return buySchema;
+        case "exchange":
+            return exchangeSchema;
+        default:
+            return {};
+    }
 };
+
 
 
 export const initialValues: CarRequest = {
     carStatus: 0,            // number
-    // carType: 0,              // number
     brandId: "",             // string (ID)
     modalId: "",             // string (ID)
     carEngineSizeId: "",     // string (ID)

@@ -7,14 +7,14 @@ import { useFormik } from 'formik';
 import { useMechanism } from '@hooks';
 import { MechanismRequest } from '@types';
 
-import { countries, carStatus, cities } from '@constants';
+import { countries, cities, vechileStatus } from '@constants';
 import { BaseLayout, Dropdown, Header, ValidationError } from '@components';
 
 import { getValidationSchema, initialValues } from './const';
 import { styles } from './styles';
 
 export const VehicleFormScreen = ({ route }) => {
-    const { mechanismId, type } = route?.params ?? {};
+    const { mechanism, type } = route?.params ?? {};
     const { loading, createMechanismRequest, getMechanismList } = useMechanism();
     const {
         brands,
@@ -28,7 +28,7 @@ export const VehicleFormScreen = ({ route }) => {
     const [images, setImages] = useState<any[]>([]);
 
     useEffect(() => {
-        getBrands(mechanismId);
+        getBrands(mechanism.id);
         getMehcanismEngineTypes();
     }, []);
 
@@ -87,26 +87,24 @@ export const VehicleFormScreen = ({ route }) => {
             <View style={styles.container}>
                 <Header />
                 <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 10 }}>
+                    <Text style={styles.instructions}>
+                        {type === 'buy' ?
+                            'اشتري آليه بكل سهوله'
+                            :
+                            'اعرض آليتك للبيع'
+                        }
+                    </Text>
 
 
                     <Text style={styles.instructions}>
-                        {type === 'buy'
-                            ? 'اعرض طلبك لشراء سيارة جديدة\nاتبع الخطوات المطلوبة لرفع الطلب'
-                            : type === 'exchange'
-                                ? 'اعرض سيارتك للمبادلة\nاتبع الخطوات المطلوبة لرفع الطلب'
-                                : 'اعرض سيارتك الجديدة للبيع\nاتبع الخطوات المطلوبة لرفع الطلب'}
+                        {type === 'buy' ?
+                            'حدد التفاصيل في الأسفل ودوس على زر البحث' :
+                            ' أكمل التفاصيل في الأسفل و ارسل الطلب'
+                        }
                     </Text>
 
-                    {/* Car Status */}
-                    <View style={{
-                        justifyContent: 'center',
-                        alignItems: 'flex-end',
 
-                    }}>
-                        {formik.errors.mechanismType && formik.touched.mechanismType &&
-                            <Text style={{ color: 'red', fontFamily: 'Regular' }}> * {formik.errors.mechanismType}</Text>}
 
-                    </View>
 
                     {/* Brand & Model */}
                     <ValidationError<MechanismRequest> formik={formik} fields={['mechanismBrandId', 'mechanismModalId']} />
@@ -126,7 +124,7 @@ export const VehicleFormScreen = ({ route }) => {
                             data={models}
                             labelField="name"
                             valueField="id"
-                            placeholder="الموديل"
+                            placeholder="نوع الآليه"
                             value={formik.values.mechanismModalId}
                             onChange={item => formik.setFieldValue("mechanismModalId", item.id)}
                         />
@@ -139,7 +137,7 @@ export const VehicleFormScreen = ({ route }) => {
                     <View style={styles.row}>
                         <Dropdown
                             data={engineTypes}
-                            labelField="sizeName"
+                            labelField="type"
                             valueField="id"
                             placeholder="حجم المحرك"
                             value={formik.values.mechanismEngineTypeId}
@@ -165,38 +163,35 @@ export const VehicleFormScreen = ({ route }) => {
                     <ValidationError<MechanismRequest> formik={formik} fields={['mechanismStatus']} />
                     <View style={styles.row}>
                         <Dropdown
-                            data={carStatus}
+                            data={vechileStatus}
                             labelField="label"
                             valueField="value"
                             placeholder="حاله الاليه"
                             value={formik.values.mechanismStatus}
-                            onChange={item => formik.setFieldValue("carStatus", item.value)}
+                            onChange={item => formik.setFieldValue("mechanismStatus", item.value)}
                         />
-
                     </View>
 
                     {/* Board Number & Location */}
                     <ValidationError<MechanismRequest> formik={formik} fields={['mechanismNumber', 'mechanismLocation']} />
                     <View style={styles.row}>
-                        <View style={styles.row}>
-                            <Dropdown
-                                data={cities}
-                                labelField="label"
-                                valueField="value"
-                                placeholder="رقم اللوحه"
-                                value={formik.values.mechanismNumber}
-                                onChange={item => formik.setFieldValue("mechanismNumber", item.value)}
-                            />
-                            <Dropdown
-                                data={cities}
-                                labelField="label"
-                                valueField="value"
-                                placeholder="مكان التواجد"
-                                value={formik.values.mechanismLocation}
-                                onChange={item => formik.setFieldValue("mechanismLocation", item.value)}
-                            />
+                        <Dropdown
+                            data={cities}
+                            labelField="label"
+                            valueField="value"
+                            placeholder="رقم اللوحه"
+                            value={formik.values.mechanismNumber}
+                            onChange={item => formik.setFieldValue("mechanismNumber", item.value)}
+                        />
+                        <Dropdown
+                            data={cities}
+                            labelField="label"
+                            valueField="value"
+                            placeholder="مكان التواجد"
+                            value={formik.values.mechanismLocation}
+                            onChange={item => formik.setFieldValue("mechanismLocation", item.value)}
+                        />
 
-                        </View>
                     </View>
 
 
@@ -206,11 +201,13 @@ export const VehicleFormScreen = ({ route }) => {
                             style={styles.input}
                             placeholder="سنه الصنع"
                             value={formik.values.mechanismYear?.toString()}
-                            onChangeText={formik.handleChange("carYear")}
+                            onChangeText={formik.handleChange("mechanismYear")}
                             keyboardType="numeric"
                             placeholderTextColor={'#999'}
                         />
                     </View>
+
+
                     <ValidationError<MechanismRequest> formik={formik} fields={['phoneNumber']} />
                     <View style={styles.row}>
                         <TextInput

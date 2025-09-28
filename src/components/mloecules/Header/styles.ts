@@ -9,15 +9,17 @@ export const styles = StyleSheet.create({
     backgroundColor: "#DDDDDD",
   },
   iconContainer: {
-    alignItems: 'center',
+    width: '30%',
+    alignItems: 'flex-end',
     justifyContent: 'center',
-    padding: 10,
+    paddingHorizontal: 20,
   },
   icon: {
     fontSize: 20,
     color: '#FFF',
   },
   carIconContainer: {
+    width: '30%',
     flexDirection: 'row',
     padding: 10,
     borderRadius: 50,

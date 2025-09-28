@@ -21,6 +21,7 @@ export const Header = () => {
   }
   return (
     <View style={styles.header}>
+
       <TouchableOpacity style={styles.iconContainer} onPress={() => handleGoBack()}>
 
         {routeName === 'Home' || routeName === 'Profile' ?
@@ -29,6 +30,22 @@ export const Header = () => {
         }
       </TouchableOpacity>
 
+
+      <View style={{
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '40%',
+      }}>
+        <Text style={{
+          fontFamily: 'Bold',
+          textAlign: 'center',
+          fontSize: 20,
+          color: colors.palette.purple,
+        }}>
+          07740222828
+        </Text>
+      </View>
 
       <View style={styles.carIconContainer}>
         <TouchableOpacity style={styles.HeaderIcon} onPress={() => { Linking.openURL(`tel:+9647740222828`) }}>

@@ -35,7 +35,7 @@ export const HomeScreen = ({ navigation }) => {
             paddingHorizontal: 30,
           }}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('ListScreen', {
+              onPress={() => navigation.navigate('CarListScreen', {
                 type: 'buy'
               })}
               style={{
@@ -50,7 +50,7 @@ export const HomeScreen = ({ navigation }) => {
 
           <View style={styles.buttonsContainer}>
             <Categorey
-              onPress={() => navigation.navigate('ListScreen', { type: 'exchange' })}
+              onPress={() => navigation.navigate('CarListScreen', { type: 'exchange' })}
               text={'آراوس سيارتي'}
               icon={require('@assets/images/handshake.png')}
             />
@@ -80,7 +80,7 @@ export const HomeScreen = ({ navigation }) => {
             paddingHorizontal: 30,
           }}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('ListScreen', {
+              onPress={() => navigation.navigate('', {
                 type: 'buy'
               })}
               style={{

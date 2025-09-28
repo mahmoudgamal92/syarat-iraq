@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { BottomTabs } from "@navigation/tabs";
-import { CarFormScreen, ListScreen, VehicleFormScreen, VehicleTypeScreen, SplashScreen } from '@screens';
+import { CarFormScreen, CarListScreen, VehicleFormScreen, VehicleTypeScreen, SplashScreen } from '@screens';
 import { BaseLayout } from '@components';
 
 export const AppStack = () => {
@@ -21,7 +21,7 @@ export const AppStack = () => {
             <HomeStack.Screen name="CarFormScreen" component={CarFormScreen} />
             <HomeStack.Screen name="VehicleFormScreen" component={VehicleFormScreen} />
             <HomeStack.Screen name="VehicleTypeScreen" component={VehicleTypeScreen} />
-            <HomeStack.Screen name="ListScreen" component={ListScreen} />
+            <HomeStack.Screen name="CarListScreen" component={CarListScreen} />
         </HomeStack.Navigator>
     );
 };

@@ -12,11 +12,10 @@ export type OptionsSheetRef = {
 
 type OptionsSheetProps = {
   data: Array<{ id: number; name: string }>;
+  onChange?: (selected: number[]) => void;
 };
 
 export const OptionsSheet = forwardRef<OptionsSheetRef, OptionsSheetProps>(({ data }, ref) => {
-  const { carDetails } = useCars();
-
   const optionsSheetRef = useRef<BottomSheetRef>(null);
 
   const [selectedFeatures, setSelectedFeatures] = useState([]);

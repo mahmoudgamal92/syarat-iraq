@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, ScrollView, ActivityIndicator, StatusBar } from 'react-native';
-import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
+import { View, Text, TextInput, TouchableOpacity, Image, ScrollView, ActivityIndicator, StatusBar, ImageBackground } from 'react-native';
+import { Ionicons, FontAwesome5, AntDesign } from '@expo/vector-icons';
+
 import * as ImagePicker from 'expo-image-picker';
 import { useFormik } from 'formik';
 
@@ -11,6 +12,7 @@ import { OptionsSheetRef, OptionsSheet } from './components';
 import { styles } from './styles';
 import { getValidationSchema, initialValues } from './const';
 import { countries, clinders, carStatus, cities } from '@constants';
+import { colors } from '@constants/colors';
 
 export const CarFormScreen = ({ route }) => {
   const { type } = route?.params ?? {};
@@ -65,7 +67,6 @@ export const CarFormScreen = ({ route }) => {
     initialValues,
     validationSchema: getValidationSchema(type),
     onSubmit: async (values) => {
-      console.log('Form Values:', values);
       const formData: CarRequest = {
         requestType: type === 'buy' ? 1 : 2,
         brandId: values.brandId,
@@ -90,16 +91,18 @@ export const CarFormScreen = ({ route }) => {
         toYear: values.toYear,
         moreDetailIds: "",
       };
+
       if (type === 'buy') {
         const cars = await getCarList(formData);
-
         cars.length === 0 ? alert('لا يوجد سيارات متوفره حاليا') :
           alert(`يوجد ${cars.length} سيارات متوفره حاليا`);
+        return;
       }
       createCarRequest(formData);
       console.log(formData);
     },
   });
+
 
   return (
     <BaseLayout>
@@ -124,36 +127,6 @@ export const CarFormScreen = ({ route }) => {
                 : 'أكمل التفاصيل في الأسفل'
             }
           </Text>
-
-
-
-          {/* Car Status */}
-          {/* <View style={{
-            justifyContent: 'center',
-            alignItems: 'flex-end',
-
-          }}>
-            {formik.errors.carType && formik.touched.carType &&
-              <Text style={{ color: 'red', fontFamily: 'Regular' }}> * {formik.errors.carType}</Text>}
-
-          </View>
-          <View style={styles.row}>
-            <TouchableOpacity
-              onPress={() => formik.setFieldValue("carType", 1)}
-              style={[styles.featureButton, formik.values.carType === 1 && styles.featureButtonSelected]}
-            >
-              <Ionicons name="car-sport" size={40} color={formik.values.carType === 1 ? "#fff" : "#000"} />
-              <Text style={styles.featureText}>جديدة</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => formik.setFieldValue("carType", 2)}
-              style={[styles.featureButton, formik.values.carType === 2 && styles.featureButtonSelected]}
-            >
-              <Ionicons name="car" size={40} color={formik.values.carType === 2 ? "#fff" : "#000"} />
-              <Text style={styles.featureText}>مستعملة</Text>
-            </TouchableOpacity>
-          </View> */}
-
 
           {/* Brand & Model */}
           <ValidationError<CarRequest> formik={formik} fields={['brandId', 'modalId']} />
@@ -392,15 +365,39 @@ export const CarFormScreen = ({ route }) => {
           {type === 'sell' && (
             <View style={styles.formContainer}>
               {images.length > 0 ? (
-                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                  {images.map((img, index) => (
-                    <Image
-                      key={index}
-                      source={{ uri: img.uri }}
-                      style={{ width: 100, height: 100, marginRight: 10, borderRadius: 8 }}
-                    />
-                  ))}
-                </ScrollView>
+                <>
+                  <View style={{
+                    paddingVertical: 10
+                  }}>
+                    <Text style={{ color: 'grey', fontFamily: 'Regular', fontSize: 14, textAlign: 'center' }}>
+                      الحد الاقصى للصور هو 15 صوره
+                    </Text>
+                  </View>
+
+                  <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                    {images.map((img, index) => (
+                      <View>
+                        <ImageBackground
+                          key={index}
+                          source={{ uri: img.uri }}
+                          style={{ width: 100, height: 100, marginRight: 10, }}
+                          imageStyle={{ borderRadius: 8 }}
+                        >
+                          <TouchableOpacity onPress={() => {
+                            const newImages = images.filter((_, i) => i !== index);
+                            setImages(newImages);
+                            formik.setFieldValue("carImages", newImages);
+                          }
+                          }>
+                            <AntDesign name="close-circle" size={24} color="red" />
+                          </TouchableOpacity>
+                        </ImageBackground>
+                      </View>
+
+
+                    ))}
+                  </ScrollView>
+                </>
               ) : (
                 <TouchableOpacity onPress={pickImage} style={{
                   alignItems: 'center',
@@ -421,14 +418,16 @@ export const CarFormScreen = ({ route }) => {
               <TouchableOpacity onPress={() => optionsRef.current?.open()} style={{ alignItems: 'center' }}>
                 <FontAwesome5 name='car' size={60} color="grey" />
                 <Text style={{ color: 'grey', fontFamily: 'Regular' }}>قم باختيار باقي مواصفات السياره</Text>
+
+
               </TouchableOpacity>
             </View>
           )}
 
           {type === 'buy' && (
             <Text style={{
-              fontFamily: 'Regular',
-              color: 'grey',
+              fontFamily: 'Bold',
+              color: colors.light.purple,
               textAlign: 'right',
               fontSize: 12,
             }}>
@@ -437,14 +436,16 @@ export const CarFormScreen = ({ route }) => {
           )}
 
           {/* Submit */}
-          <TouchableOpacity style={styles.uploadButton} onPress={() => formik.handleSubmit()}>
-            {loading ? <ActivityIndicator color="#FFF" size="large" /> :
-              <Text style={styles.uploadButtonText}>
+          <TouchableOpacity
+            disabled={loading}
+            style={styles.uploadButton} onPress={() => {
+              console.log(formik.errors);
+              formik.handleSubmit()
+            }}>
+            <Text style={styles.uploadButtonText}>
 
-                {type === 'buy' ? 'اضغط هنا للبحث' : type === 'exchange' ? 'اضغط هنا لارسال الطلب' : 'اضغط هنا لارسال الطلب'}
-              </Text>
-
-            }
+              {type === 'buy' ? 'اضغط هنا للبحث' : type === 'exchange' ? 'اضغط هنا لارسال الطلب' : 'اضغط هنا لارسال الطلب'}
+            </Text>
           </TouchableOpacity>
         </ScrollView>
 

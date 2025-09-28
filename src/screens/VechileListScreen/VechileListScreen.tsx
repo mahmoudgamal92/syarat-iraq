@@ -13,7 +13,7 @@ import { carList } from '@constants';
 import { styles } from './styles';
 import { BaseLayout, Header, Tabber } from '@components';
 
-export const ListScreen = ({ route, navigation }) => {
+export const VechileListScreen = ({ route, navigation }) => {
     const { type } = route?.params ?? {};
 
     const [selectedTab, setSelectedTab] = React.useState<number | string>('');
@@ -41,17 +41,31 @@ export const ListScreen = ({ route, navigation }) => {
                         onPress={() => navigation.navigate('CarFormScreen', { type: 'buy' })}
                         style={{
                             backgroundColor: '#4A148C',
-                            padding: 10,
-                            borderRadius: 5,
+                            borderRadius: 50,
+                            height: 50,
                             alignItems: 'center',
-                            marginBottom: 10
+                            marginBottom: 10,
+                            flexDirection: 'row-reverse',
+                            columnGap: 20,
+                            overflow: 'visible'
                         }}>
+                        <View style={{
+                            width: 60,
+                            height: 60,
+                            borderRadius: 50,
+                            backgroundColor: '#7B1FA2',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}>
+                            <Entypo name="circle-with-plus" size={30} color="#FFF" />
+
+                        </View>
                         <Text style={{
                             color: '#FFF',
                             fontFamily: 'Bold',
                             fontSize: 16
                         }}>
-                            آراوس سيارتي
+                            اضغط هنا لعرض سيارتك للمراوس
                         </Text>
                     </TouchableOpacity>
 

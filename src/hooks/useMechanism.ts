@@ -7,6 +7,8 @@ import {
     modelService,
     mechanismRequestService,
     mechanismListService,
+    typesService,
+    engineTypeService,
 } from '@services/mechanisms';
 
 export const useMechanism = () => {
@@ -48,13 +50,14 @@ export const useMechanism = () => {
     const getMechanismTypes = useCallback(
         async () => {
             setLoading(true);
-            const res = await brandService('');
+            const res = await typesService();
 
             if (res.status !== 200) {
                 showToast('حدث خطأ ما، الرجاء المحاولة وقت اخر', 'error')
                 return;
             }
             setMechanismTypes(res?.data?.data || []);
+            setLoading(false);
         },
         [],
     );
@@ -62,7 +65,7 @@ export const useMechanism = () => {
     const getMehcanismEngineTypes = useCallback(
         async () => {
             setLoading(true);
-            const res = await brandService('');
+            const res = await engineTypeService();
 
             if (res.status !== 200) {
                 showToast('حدث خطأ ما، الرجاء المحاولة وقت اخر', 'error')

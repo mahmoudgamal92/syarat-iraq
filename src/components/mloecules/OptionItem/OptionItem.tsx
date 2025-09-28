@@ -3,35 +3,35 @@ import React from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
-import {styles} from './styles';
+import { styles } from './styles';
 
 
 export const OptionItem = ({
-text, 
-onPress,
-icon,
-selected,
+  text,
+  onPress,
+  icon,
+  selected,
 }) => {
   return (
     <TouchableOpacity
-    style={[
-      styles.featureButton,
-      selected && styles.featureButtonSelected,
-    ]}
-    onPress={onPress}
-  >
-    <MaterialIcons
-      name={icon}
-      size={30}
-      color={selected ? '#FFF' : '#4A4A4A'} // Change icon color
-    />
-    <Text
       style={[
-        styles.featureText,
+        styles.featureButton,
+        selected && styles.featureButtonSelected,
       ]}
+      onPress={onPress}
     >
-      {text}
-    </Text>
-  </TouchableOpacity>
+      <MaterialIcons
+        name={'car-repair'}
+        size={30}
+        color={selected ? '#FFF' : '#4A4A4A'} // Change icon color
+      />
+      <Text
+        style={[
+          styles.featureText,
+        ]}
+      >
+        {text}
+      </Text>
+    </TouchableOpacity>
   );
 };

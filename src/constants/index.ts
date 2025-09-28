@@ -100,6 +100,18 @@ export const carStatus = [
 
 ];
 
+
+
+export const vechileStatus = [
+  { label: 'شغاله', value: 3, },
+  { label: 'عطلانه', value: 2, },
+  { label: 'ادوات', value: 1, },
+
+];
+
+
+
+
 export const categories = [
   { name: 'الحمل', color: '#F28C5C', value: "truck" },
   { name: 'الرافعات', color: '#5C4CF2', value: "cranes" },
@@ -108,7 +120,7 @@ export const categories = [
   { name: 'الكريدارات', color: '#F28C5C', value: "bulldozers" },
   { name: 'الكرينات', color: '#5C4CF2', value: "cranes" },
   { name: 'الحادلات', color: '#5C4CF2', value: "loaders" },
-  { name: 'الشغلات', color: '#4CF2B0', value: "forklifts" },
+  { name: 'الشفلات', color: '#4CF2B0', value: "forklifts" },
   { name: 'باصات', color: '#5C4CF2', value: "buses" },
   { name: 'اليات زراعية', color: '#4CF2B0', value: "agricultural" },
 ];
