@@ -3,6 +3,7 @@ import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { Header, Categorey, BaseLayout } from '@components';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { styles } from './styles';
+import { SCREENS } from '@navigation';
 
 export const HomeScreen = ({ navigation }) => {
   return (
@@ -35,14 +36,19 @@ export const HomeScreen = ({ navigation }) => {
             paddingHorizontal: 30,
           }}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('CarListScreen', {
+              onPress={() => navigation.navigate(SCREENS.CARS.LIST, {
                 type: 'buy'
               })}
               style={{
-                flexDirection: 'row'
+                flexDirection: 'row',
+                backgroundColor: 'green',
+                padding: 5,
+                borderRadius: 5
               }}>
-              <MaterialIcons name="keyboard-arrow-left" size={24} color="grey" />
-              <Text style={{ color: 'grey', fontFamily: 'Regular' }}>عرض الكل</Text>
+              <MaterialIcons name="keyboard-arrow-left" size={24} color="#FFF" />
+              <Text style={{ color: '#FFF', fontFamily: 'Regular' }}>
+                كل العروض
+              </Text>
             </TouchableOpacity>
             <Text style={styles.sectionTitle}>قسم السيارات</Text>
           </View>
@@ -50,18 +56,18 @@ export const HomeScreen = ({ navigation }) => {
 
           <View style={styles.buttonsContainer}>
             <Categorey
-              onPress={() => navigation.navigate('CarListScreen', { type: 'exchange' })}
+              onPress={() => navigation.navigate(SCREENS.CARS.LIST, { type: 'exchange' })}
               text={'آراوس سيارتي'}
               icon={require('@assets/images/handshake.png')}
             />
 
             <Categorey
-              onPress={() => navigation.navigate('CarFormScreen', { type: 'buy' })}
+              onPress={() => navigation.navigate(SCREENS.CARS.FORM, { type: 'buy' })}
               text={'اشتري سياره'}
               icon={require('@assets/images/handshake.png')}
             />
             <Categorey
-              onPress={() => navigation.navigate('CarFormScreen', { type: 'sell' })}
+              onPress={() => navigation.navigate(SCREENS.CARS.FORM, { type: 'sell' })}
               text={'ابيع سيارتي'}
               icon={require('@assets/images/car.png')}
             />
@@ -80,14 +86,17 @@ export const HomeScreen = ({ navigation }) => {
             paddingHorizontal: 30,
           }}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('', {
-                type: 'buy'
-              })}
+              onPress={() => navigation.navigate(SCREENS.VECHILE.LIST)}
               style={{
-                flexDirection: 'row'
+                flexDirection: 'row',
+                backgroundColor: 'green',
+                padding: 5,
+                borderRadius: 5
               }}>
-              <MaterialIcons name="keyboard-arrow-left" size={24} color="grey" />
-              <Text style={{ color: 'grey', fontFamily: 'Regular' }}>عرض الكل</Text>
+              <MaterialIcons name="keyboard-arrow-left" size={24} color="#FFF" />
+              <Text style={{ color: '#FFF', fontFamily: 'Regular' }}>
+                كل العروض
+              </Text>
             </TouchableOpacity>
             <Text style={[styles.sectionTitle, { color: '#FF9A52' }]}>
               قسم الآليات
@@ -97,7 +106,7 @@ export const HomeScreen = ({ navigation }) => {
           <View style={styles.buttonsContainer}>
             <Categorey
               onPress={() => {
-                navigation.navigate('VehicleTypeScreen', {
+                navigation.navigate(SCREENS.VECHILE.TYPE, {
                   type: 'sell'
                 })
               }}
@@ -105,7 +114,7 @@ export const HomeScreen = ({ navigation }) => {
               icon={require('@assets/images/bulldozer.png')} />
             <Categorey
               onPress={() => {
-                navigation.navigate('VehicleTypeScreen', {
+                navigation.navigate(SCREENS.VECHILE.TYPE, {
                   type: 'buy'
                 })
               }}

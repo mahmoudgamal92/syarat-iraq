@@ -10,7 +10,6 @@ export interface CarRequest {
     carImportCountry: string;
     carYear: number | string;
     clinderNumber: number;
-    // carType: number; // 1 = جديد, 2 = مستعمل
     carStatus: number; // 1 = كلين, 2 = بدون حادث, 3 = بها حادث
     carNumber: string;
     carLocation: string;
@@ -22,3 +21,23 @@ export interface CarRequest {
     replaceByModalId?: string;
     replaceByBrandId?: string;
 }
+
+export interface carListReq {
+    PurchaseType: number;
+    PageNumber: number;
+    PageSize: number;
+}
+
+
+
+export enum ACTION {
+    SELL = 'sell',
+    EXCHANGE = 'exchange',
+    BUY = 'buy'
+}
+
+export const carFilters = [
+    { id: 1, title: " اقل سعر" },
+    { id: 2, title: "اعلي سعر" },
+    { id: 0, title: "اقل كيلومترات" },
+];

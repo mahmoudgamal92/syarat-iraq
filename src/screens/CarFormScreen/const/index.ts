@@ -6,7 +6,10 @@ import { CarRequest } from '@types';
 const buySchema = Yup.object().shape({
     brandId: Yup.string().required("اختر العلامة التجارية"),
     modalId: Yup.string().required("اختر الفئة"),
-    carEngineSizeId: Yup.string().required("اختر حجم المحرك"),
+    fromYear: Yup.string().required("اختر الموديل من"),
+    toYear: Yup.string().required("اختر الموديل الي"),
+
+
 });
 
 const exchangeSchema = Yup.object().shape({

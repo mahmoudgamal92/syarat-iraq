@@ -76,16 +76,41 @@ export const carList = [
   },
 ];
 
-export const countries = [
-  { label: 'ياباني', value: 'ياباني', },
-  { label: 'كوري', value: 'كوري', },
+export const countries =
+  [
+    { "label": "اليابان", "value": "اليابان" },
+    { "label": "كوريا", "value": "كوريا" },
+    { "label": "الصين", "value": "الصين" },
+    { "label": "امريكا", "value": "امريكا" },
+    { "label": "خليجي", "value": "خليجي" },
+    { "label": "المانيا", "value": "المانيا" },
+    { "label": "ايطاليا", "value": "ايطاليا" },
+    { "label": "السويد", "value": "السويد" },
+    { "label": "فرنسا", "value": "فرنسا" },
+    { "label": "بولندا", "value": "بولندا" },
+    { "label": "كرواتيا", "value": "كرواتيا" },
+    { "label": "الهند", "value": "الهند" },
+    { "label": "روسيا", "value": "روسيا" },
+    { "label": "ايران", "value": "ايران" }
+  ];
 
-];
 
 
 export const clinders = [
+  { label: '1', value: '1', },
   { label: '2', value: '2', },
+  { label: '3', value: '3', },
   { label: '4', value: '4', },
+  { label: '5', value: '5', },
+  { label: '6', value: '6', },
+  { label: '7', value: '7', },
+  { label: '8', value: '8', },
+  { label: '9', value: '9', },
+  { label: '10', value: '10', },
+  { label: '11', value: '11', },
+  { label: '12', value: '12', },
+
+
 ];
 
 export const carType = [
@@ -97,7 +122,6 @@ export const carStatus = [
   { label: 'بها حادث', value: 3, },
   { label: 'بدون حادث', value: 2, },
   { label: 'كلين', value: 1, },
-
 ];
 
 

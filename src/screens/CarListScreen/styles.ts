@@ -59,7 +59,7 @@ export const styles = StyleSheet.create({
         height: '100%',
         borderRadius: 10,
         marginLeft: 10,
-        resizeMode: 'contain'
+        resizeMode: 'cover',
     },
     footer: {
         flexDirection: "row",
@@ -84,6 +84,18 @@ export const styles = StyleSheet.create({
         fontFamily: 'Regular',
         fontSize: 12,
         padding: 2
+    },
+    errorText: {
+        textAlign: 'center',
+        color: '#D32F2F',
+        fontFamily: 'Regular',
+        marginVertical: 16,
+    },
+    emptyText: {
+        textAlign: 'center',
+        color: '#444',
+        fontFamily: 'Regular',
+        marginVertical: 16,
     },
     bottomNav: {
         flexDirection: "row",

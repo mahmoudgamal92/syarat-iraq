@@ -1,7 +1,7 @@
 import { request } from '@network';
-import { CarRequest } from '@types';
+import { carListReq } from '@types';
 
-export const carListService = async (body: CarRequest) => {
+export const carListService = async (body: carListReq) => {
     const res = request({
         method: 'post',
         path: '/SearchCars',

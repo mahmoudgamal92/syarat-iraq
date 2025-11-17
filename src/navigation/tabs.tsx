@@ -23,7 +23,7 @@ export const BottomTabs = () => {
             borderTopWidth: 0,
             height: Platform.OS == 'ios' ? 90 : 75,
             borderRadius: 100,
-            marginBottom: 40,
+            marginBottom: Platform.OS == 'ios' ? 40 : 60,
             marginHorizontal: 10,
             justifyContent: 'center',
             alignItems: 'center',

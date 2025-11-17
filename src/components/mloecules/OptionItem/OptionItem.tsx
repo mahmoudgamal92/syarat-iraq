@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import AntDesign from '@expo/vector-icons/AntDesign';
 
 import { styles } from './styles';
 
@@ -20,8 +20,8 @@ export const OptionItem = ({
       ]}
       onPress={onPress}
     >
-      <MaterialIcons
-        name={'car-repair'}
+      <AntDesign
+        name={icon}
         size={30}
         color={selected ? '#FFF' : '#4A4A4A'} // Change icon color
       />

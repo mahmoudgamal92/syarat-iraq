@@ -15,6 +15,8 @@ import { styles } from './styles';
 
 export const VehicleFormScreen = ({ route }) => {
     const { mechanism, type } = route?.params ?? {};
+    // console.log('mechanism', mechanism);
+    console.log('type', type);
     const { loading, createMechanismRequest, getMechanismList } = useMechanism();
     const {
         brands,
@@ -54,15 +56,13 @@ export const VehicleFormScreen = ({ route }) => {
         initialValues,
         validationSchema: getValidationSchema(type),
         onSubmit: async (values) => {
-            console.log('Form Values:', values);
             const formData: MechanismRequest = {
-                mechanismTypeId: values.mechanismTypeId,
+                mechanismTypeId: mechanism.id,
                 mechanismBrandId: values.mechanismBrandId,
                 mechanismModalId: values.mechanismModalId,
                 mechanismEngineTypeId: values.mechanismEngineTypeId,
                 mechanismImportCountry: values.mechanismImportCountry,
                 mechanismYear: values.mechanismYear,
-                mechanismType: values.mechanismType,
                 mechanismStatus: values.mechanismStatus,
                 mechanismLocation: values.mechanismLocation,
                 mechanismNumber: values.mechanismNumber,
@@ -72,13 +72,14 @@ export const VehicleFormScreen = ({ route }) => {
                 mechanismImages: values.mechanismImages,
             };
             if (type === 'buy') {
+                //console.log('formData', formData)
                 const cars = await getMechanismList(formData);
-
+                return;
                 // cars.length === 0 ? alert('لا يوجد سيارات متوفره حاليا') :
                 //     alert(`يوجد ${cars.length} سيارات متوفره حاليا`);
             }
             createMechanismRequest(formData);
-            console.log(formData);
+            //console.log(formData);
         },
     });
 
@@ -139,7 +140,7 @@ export const VehicleFormScreen = ({ route }) => {
                             data={engineTypes}
                             labelField="type"
                             valueField="id"
-                            placeholder="حجم المحرك"
+                            placeholder="نوع المحرك"
                             value={formik.values.mechanismEngineTypeId}
                             onChange={item => formik.setFieldValue("mechanismEngineTypeId", item.id)}
 
@@ -195,55 +196,63 @@ export const VehicleFormScreen = ({ route }) => {
                     </View>
 
 
-                    <ValidationError<MechanismRequest> formik={formik} fields={['mechanismYear']} />
-                    <View style={styles.row}>
-                        <TextInput
-                            style={styles.input}
-                            placeholder="سنه الصنع"
-                            value={formik.values.mechanismYear?.toString()}
-                            onChangeText={formik.handleChange("mechanismYear")}
-                            keyboardType="numeric"
-                            placeholderTextColor={'#999'}
-                        />
-                    </View>
 
-
-                    <ValidationError<MechanismRequest> formik={formik} fields={['phoneNumber']} />
-                    <View style={styles.row}>
-                        <TextInput
-                            style={styles.input}
-                            placeholder="رقم الهاتف"
-                            value={formik.values.phoneNumber}
-                            onChangeText={formik.handleChange("phoneNumber")}
-                            keyboardType="numeric"
-                            placeholderTextColor={'#999'}
-                        />
-                    </View>
 
 
                     {/* Kilometers & Price */}
+                    {type === 'sell' && (
+                        <>
+                            <ValidationError<MechanismRequest> formik={formik} fields={['mechanismYear']} />
+                            <View style={styles.row}>
+                                <TextInput
+                                    style={styles.input}
+                                    placeholder="سنه الصنع"
+                                    value={formik.values.mechanismYear?.toString()}
+                                    onChangeText={formik.handleChange("mechanismYear")}
+                                    keyboardType="numeric"
+                                    placeholderTextColor={'#999'}
+                                />
+                            </View>
 
-                    <ValidationError<MechanismRequest> formik={formik} fields={['mechanismOdometer', 'mechanismPrice']} />
-                    <View style={styles.row}>
-                        <TextInput
-                            style={styles.input}
-                            placeholder="شكد ماشيه الاليه"
-                            value={formik.values.mechanismOdometer?.toString()}
-                            onChangeText={formik.handleChange("mechanismOdometer")}
-                            keyboardType="numeric"
-                            placeholderTextColor={'#999'}
-                        />
-                        {type !== 'exchange' && (
-                            <TextInput
-                                style={styles.input}
-                                placeholder="السعر"
-                                value={formik.values.mechanismPrice?.toString()}
-                                onChangeText={formik.handleChange("mechanismPrice")}
-                                keyboardType="numeric"
-                                placeholderTextColor={'#999'}
-                            />
-                        )}
-                    </View>
+
+
+                            <ValidationError<MechanismRequest> formik={formik} fields={['phoneNumber']} />
+                            <View style={styles.row}>
+                                <TextInput
+                                    style={styles.input}
+                                    placeholder="رقم الهاتف"
+                                    value={formik.values.phoneNumber}
+                                    onChangeText={formik.handleChange("phoneNumber")}
+                                    keyboardType="numeric"
+                                    placeholderTextColor={'#999'}
+                                />
+                            </View>
+
+
+
+                            <ValidationError<MechanismRequest> formik={formik} fields={['mechanismOdometer', 'mechanismPrice']} />
+                            <View style={styles.row}>
+                                <TextInput
+                                    style={styles.input}
+                                    placeholder="شكد ماشيه الاليه"
+                                    value={formik.values.mechanismOdometer?.toString()}
+                                    onChangeText={formik.handleChange("mechanismOdometer")}
+                                    keyboardType="numeric"
+                                    placeholderTextColor={'#999'}
+                                />
+                                <TextInput
+                                    style={styles.input}
+                                    placeholder="السعر بالدولار"
+                                    value={formik.values.mechanismPrice?.toString()}
+                                    onChangeText={formik.handleChange("mechanismPrice")}
+                                    keyboardType="numeric"
+                                    placeholderTextColor={'#999'}
+                                />
+                            </View>
+
+                        </>
+                    )}
+
 
                     {/* Images */}
                     {type === 'sell' && (
@@ -271,7 +280,11 @@ export const VehicleFormScreen = ({ route }) => {
                     )}
 
                     {/* Submit */}
-                    <TouchableOpacity style={styles.uploadButton} onPress={() => formik.handleSubmit()}>
+                    <TouchableOpacity style={styles.uploadButton}
+                        onPress={() => {
+                            console.log(formik.errors);
+                            formik.handleSubmit()
+                        }}>
                         {loading ? <ActivityIndicator color="#FFF" size="large" /> :
                             <Text style={styles.uploadButtonText}>
                                 {type === 'buy' ? 'اضغط هنا للبحث' : 'اضغط هنا لارسال الطلب'}

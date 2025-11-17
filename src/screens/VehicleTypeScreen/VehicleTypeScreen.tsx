@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { styles } from './styles';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -7,6 +7,7 @@ import { BaseLayout, Header, Loader } from '@components';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useMechanism } from '@hooks';
 import { colors } from '@constants/colors';
+import { SCREENS } from '@navigation';
 
 type RootStackParamList = {
   VehicleFormScreen: { type: string; mechanism: any };
@@ -35,7 +36,7 @@ export const VehicleTypeScreen = ({ route }) => {
               <TouchableOpacity
                 key={index}
                 style={[styles.button, { backgroundColor: colors.palette.purple }]}
-                onPress={() => navigation.navigate('VehicleFormScreen', { type: type, mechanism: item })}
+                onPress={() => navigation.navigate(SCREENS.VECHILE.FORM, { type: type, mechanism: item })}
               >
                 <Text style={styles.buttonText}>{item.name}</Text>
                 <MaterialCommunityIcons name="dharmachakra" size={30} color="#FFF" />

@@ -3,6 +3,9 @@ import { StyleSheet} from 'react-native';
 export const styles = StyleSheet.create({
     featureButtonSelected: {
         backgroundColor: '#00C1A6', 
+        width:80,
+        height:80,
+        maxHeight:80
       },
       featureGrid: {
         flexGrow: 1,
@@ -16,10 +19,11 @@ export const styles = StyleSheet.create({
         borderRadius: 8,
       },
       featureText: {
-        fontSize: 12,
+        fontSize: 10,
         color: '#333',
         marginTop: 4,
         textAlign: 'center',
+        fontFamily:'Regular'
       },
       featureTextSelected: {
         color: '#FFF',

@@ -1,20 +1,20 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, ScrollView, ActivityIndicator, StatusBar, ImageBackground } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Image, ScrollView, ImageBackground } from 'react-native';
 import { Ionicons, FontAwesome5, AntDesign } from '@expo/vector-icons';
 
 import * as ImagePicker from 'expo-image-picker';
 import { useFormik } from 'formik';
 
 import { useCars } from '@hooks';
-import { CarRequest } from '@types';
-import { BaseLayout, Dropdown, Header, ValidationError } from '@components';
-import { OptionsSheetRef, OptionsSheet } from './components';
-import { styles } from './styles';
+import { ACTION, CarRequest } from '@types';
+import { BaseLayout, Dropdown, Header, ValidationError, OptionsSheetRef, OptionsSheet, OptionItem } from '@components';
 import { getValidationSchema, initialValues } from './const';
 import { countries, clinders, carStatus, cities } from '@constants';
 import { colors } from '@constants/colors';
+import { SCREENS } from '@navigation';
+import { styles } from './styles';
 
-export const CarFormScreen = ({ route }) => {
+export const CarFormScreen = ({ route, navigation }) => {
   const { type } = route?.params ?? {};
   const {
     loading,
@@ -31,12 +31,11 @@ export const CarFormScreen = ({ route }) => {
     getGasTypes,
     getCarDetails,
     createCarRequest,
-    getCarList
   } = useCars();
 
   const [images, setImages] = useState<any[]>([]);
+  const [options, setOptions] = useState<any[]>([]);
   const optionsRef = useRef<OptionsSheetRef>(null);
-
   useEffect(() => {
     getBrands();
     getEngineSizes();
@@ -44,6 +43,13 @@ export const CarFormScreen = ({ route }) => {
     getGasTypes();
     getCarDetails();
   }, []);
+
+
+
+  const handleSelectedOptions = (selected) => {
+    //console.log(selected);
+    setOptions(selected);
+  };
 
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -58,17 +64,26 @@ export const CarFormScreen = ({ route }) => {
         uri: asset.uri,
         base64: asset.base64,
       }));
+
+      // merge all base64 into ONE big string (no separators)
+      const mergedBase64 = selected.map(img => img.base64).join('');
+
+      // add the base64 header prefix
+      const finalBase64String = `data:image/png;base64,${mergedBase64}`;
+
       setImages(selected);
-      formik.setFieldValue("carImages", selected);
+      formik.setFieldValue("carImages", finalBase64String);
+      console.log('finalBase64String', finalBase64String)
     }
   };
+
 
   const formik = useFormik<CarRequest>({
     initialValues,
     validationSchema: getValidationSchema(type),
     onSubmit: async (values) => {
       const formData: CarRequest = {
-        requestType: type === 'buy' ? 1 : 2,
+        requestType: type === ACTION.BUY ? 1 : 2,
         brandId: values.brandId,
         modalId: values.modalId,
         carEngineSizeId: values.carEngineSizeId,
@@ -85,17 +100,21 @@ export const CarFormScreen = ({ route }) => {
         carPrice: Number(values.carPrice),
         phoneNumber: values.phoneNumber,
         replaceByModalId: values.replaceByModalId,
-        carImages: "",
+        carImages: values.carImages,
         replaceByBrandId: values.replaceByBrandId,
         fromYear: values.fromYear,
         toYear: values.toYear,
-        moreDetailIds: "",
+        moreDetailIds: options.map(o => o.id).join(','),
       };
 
-      if (type === 'buy') {
-        const cars = await getCarList(formData);
-        cars.length === 0 ? alert('لا يوجد سيارات متوفره حاليا') :
-          alert(`يوجد ${cars.length} سيارات متوفره حاليا`);
+      if (type === ACTION.BUY) {
+        navigation.navigate(SCREENS.CARS.LIST, {
+          type,
+          filters: values
+        });
+        // console.log('errors', formik.errors)
+        // console.log('type', type)
+        // console.log('formData', values);
         return;
       }
       createCarRequest(formData);
@@ -103,16 +122,15 @@ export const CarFormScreen = ({ route }) => {
     },
   });
 
-
   return (
     <BaseLayout>
       <View style={styles.container}>
         <Header />
         <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 10 }}>
           <Text style={styles.instructions}>
-            {type === 'buy' ?
+            {type === ACTION.BUY ?
               'تدور علي سياره ؟؟'
-              : type === 'exchange'
+              : type === ACTION.EXCHANGE
                 ? 'تريد تراوس سيارتك'
                 : 'أعرض سيارتك للبيع'
             }
@@ -120,9 +138,9 @@ export const CarFormScreen = ({ route }) => {
 
 
           <Text style={styles.instructions}>
-            {type === 'buy'
+            {type === ACTION.BUY
               ? 'حدد التفاصيل في الأسفل ودوس على زر البحث'
-              : type === 'exchange' ?
+              : type === ACTION.EXCHANGE ?
                 'حدد التفاصيل في الأسفل ودوس على زر البحث'
                 : 'أكمل التفاصيل في الأسفل'
             }
@@ -183,7 +201,7 @@ export const CarFormScreen = ({ route }) => {
               data={countries}
               labelField="label"
               valueField="value"
-              placeholder="الوارد"
+              placeholder="الوارد ( بلد المنشآ )"
               value={formik.values.carImportCountry}
               onChange={item => formik.setFieldValue("carImportCountry", item.value)}
             />
@@ -230,7 +248,6 @@ export const CarFormScreen = ({ route }) => {
               onChange={item => formik.setFieldValue("carNumber", item.value)}
             />
 
-
             <Dropdown
               data={cities}
               labelField="label"
@@ -239,11 +256,10 @@ export const CarFormScreen = ({ route }) => {
               value={formik.values.carLocation}
               onChange={item => formik.setFieldValue("carLocation", item.value)}
             />
-
           </View>
 
           {/* Conditional fields for buy */}
-          {type === 'buy' && (
+          {type === ACTION.BUY && (
             <>
               <ValidationError<CarRequest> formik={formik} fields={['fromYear', 'toYear']} />
               <View style={styles.row}>
@@ -271,7 +287,7 @@ export const CarFormScreen = ({ route }) => {
           )}
 
           {/* Conditional fields for sell / other */}
-          {type !== 'buy' && (
+          {type !== ACTION.BUY && (
             <>
               <ValidationError<CarRequest> formik={formik} fields={['carYear']} />
               <View style={styles.row}>
@@ -310,10 +326,10 @@ export const CarFormScreen = ({ route }) => {
               keyboardType="numeric"
               placeholderTextColor={'#999'}
             />
-            {type !== 'exchange' && (
+            {type === ACTION.SELL && (
               <TextInput
                 style={styles.input}
-                placeholder="السعر"
+                placeholder="السعر بالدولار"
                 value={formik.values.carPrice?.toString()}
                 onChangeText={formik.handleChange("carPrice")}
                 keyboardType="numeric"
@@ -322,8 +338,8 @@ export const CarFormScreen = ({ route }) => {
             )}
           </View>
 
-          {/* Exchange field */}
-          {type === 'exchange' && (
+          {/* EXCHANGEe field */}
+          {type === ACTION.EXCHANGE && (
             <View>
               <Text style={{
                 fontFamily: 'Bold',
@@ -362,7 +378,7 @@ export const CarFormScreen = ({ route }) => {
           )}
 
           {/* Images */}
-          {type === 'sell' && (
+          {type === ACTION.SELL && (
             <View style={styles.formContainer}>
               {images.length > 0 ? (
                 <>
@@ -413,18 +429,57 @@ export const CarFormScreen = ({ route }) => {
           )}
 
           {/* Additional Options */}
-          {type === 'sell' && (
+          {type === ACTION.SELL && (
             <View style={styles.formContainer}>
-              <TouchableOpacity onPress={() => optionsRef.current?.open()} style={{ alignItems: 'center' }}>
-                <FontAwesome5 name='car' size={60} color="grey" />
-                <Text style={{ color: 'grey', fontFamily: 'Regular' }}>قم باختيار باقي مواصفات السياره</Text>
+              {options.length > 0 ?
+                <>
+                  <Text style={{
+                    fontFamily: 'Regular',
+                    textAlign: 'right',
+                  }}>
+                    مواصفات السياره
+                  </Text>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      flexWrap: 'wrap',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      gap: 10,
+                    }}
+                  >
+                    <View style={{ flexShrink: 1 }}>
+                      <OptionItem
+                        text="اضافه اخري"
+                        onPress={() => optionsRef.current?.open()}
+                        icon="plus"
+                        selected
+                      />
+                    </View>
 
+                    {options.map((option, index) => (
+                      <View key={index} style={{ flexShrink: 1 }}>
+                        <OptionItem
+                          text={option.name}
+                          onPress={() => { }}
+                          icon="car"
+                          selected
+                        />
+                      </View>
+                    ))}
+                  </View>
+                </>
 
-              </TouchableOpacity>
+                :
+                <TouchableOpacity onPress={() => optionsRef.current?.open()} style={{ alignItems: 'center' }}>
+                  <FontAwesome5 name='car' size={60} color="grey" />
+                  <Text style={{ color: 'grey', fontFamily: 'Regular' }}>قم باختيار باقي مواصفات السياره</Text>
+                </TouchableOpacity>
+              }
             </View>
           )}
 
-          {type === 'buy' && (
+          {type === ACTION.BUY && (
             <Text style={{
               fontFamily: 'Bold',
               color: colors.light.purple,
@@ -444,12 +499,13 @@ export const CarFormScreen = ({ route }) => {
             }}>
             <Text style={styles.uploadButtonText}>
 
-              {type === 'buy' ? 'اضغط هنا للبحث' : type === 'exchange' ? 'اضغط هنا لارسال الطلب' : 'اضغط هنا لارسال الطلب'}
+              {type === ACTION.BUY ? 'اضغط هنا للبحث' : type === ACTION.EXCHANGE ? 'اضغط هنا لارسال الطلب' : 'اضغط هنا لارسال الطلب'}
             </Text>
           </TouchableOpacity>
         </ScrollView>
 
-        <OptionsSheet ref={optionsRef} data={carDetails} />
+        <OptionsSheet ref={optionsRef} data={carDetails} onChange={handleSelectedOptions} />
+
       </View >
     </BaseLayout >
   );

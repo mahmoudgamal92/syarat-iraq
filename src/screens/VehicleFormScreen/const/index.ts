@@ -8,7 +8,6 @@ export const initialValues: MechanismRequest = {
     mechanismEngineTypeId: "",
     mechanismImportCountry: "",
     mechanismYear: "",
-    mechanismType: 0,          // 1 = جديد, 2 = مستعمل
     mechanismStatus: 0,        // 1 = كلين, 2 = بدون حادث, 3 = بها حادث
     mechanismLocation: "",
     mechanismNumber: "",
@@ -21,30 +20,25 @@ export const initialValues: MechanismRequest = {
 
 export const getValidationSchema = (type: string) => {
     return Yup.object().shape({
-        mechanismTypeId: Yup.string().required("اختر نوع المركبة"),
         mechanismBrandId: Yup.string().required("اختر العلامة التجارية"),
         mechanismModalId: Yup.string().required("اختر الموديل"),
         mechanismEngineTypeId: Yup.string().required("اختر نوع المحرك"),
         mechanismImportCountry: Yup.string().required("اختر بلد الاستيراد"),
-        mechanismYear: Yup.number()
-            .required("ادخل سنة الصنع")
-            .min(1900, "سنة غير صالحة")
-            .max(new Date().getFullYear() + 1, "سنة غير صالحة"),
-        mechanismType: Yup.number()
-            .required("اختر حالة المركبة")
-            .min(1, "اختر حالة المركبة"),
+        // mechanismYear: Yup.number()
+        //     .required("ادخل سنة الصنع")
+        //     .min(1900, "سنة غير صالحة")
+        //     .max(new Date().getFullYear() + 1, "سنة غير صالحة"),
         mechanismStatus: Yup.number()
             .required("اختر حالة المركبة")
             .min(1, "اختر حالة المركبة"),
         mechanismLocation: Yup.string().required("ادخل مكان التواجد"),
         mechanismNumber: Yup.string().required("ادخل رقم المركبة"),
-        mechanismOdometer: Yup.number()
-            .required("ادخل عدد الكيلومترات")
-            .min(0, "عدد الكيلومترات يجب أن يكون أكبر من صفر"),
-        mechanismPrice: Yup.number()
-            .required("ادخل السعر")
-            .min(0, "السعر يجب أن يكون أكبر من صفر"),
-        phoneNumber: Yup.string().required("ادخل رقم الهاتف"),
-        mechanismImages: Yup.string().required("اختر صورة واحدة على الأقل"),
+        // mechanismOdometer: Yup.number()
+        //     .required("ادخل عدد الكيلومترات")
+        //     .min(0, "عدد الكيلومترات يجب أن يكون أكبر من صفر"),
+        // mechanismPrice: Yup.number()
+        //     .required("ادخل السعر")
+        //     .min(0, "السعر يجب أن يكون أكبر من صفر"),
+        // phoneNumber: Yup.string().required("ادخل رقم الهاتف"),
     });
 };

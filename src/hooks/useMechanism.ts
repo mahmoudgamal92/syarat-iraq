@@ -13,11 +13,13 @@ import {
 
 export const useMechanism = () => {
     const { showToast } = useToast();
-
     const [loading, setLoading] = useState<boolean>(false);
     const [brands, setBrands] = useState([]);
     const [models, setModels] = useState([]);
     const [mechanismTypes, setMechanismTypes] = useState([]);
+    const [mechanisms, setMechanisms] = useState([]);
+
+
     const [engineTypes, setEngineTypes] = useState([]);
 
     const getBrands = useCallback(
@@ -103,7 +105,8 @@ export const useMechanism = () => {
                 return;
             }
             setLoading(false);
-            return res.data.data;
+            setMechanisms(res.data.data);
+            //return res.data.data;
         },
         [],
     );
@@ -117,6 +120,7 @@ export const useMechanism = () => {
         createMechanismRequest,
         getMechanismList,
         getMehcanismEngineTypes,
+        mechanisms,
         models,
         brands,
         mechanismTypes,

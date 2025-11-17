@@ -1,6 +1,7 @@
 
-import { useState, useCallback, useEffect } from 'react';
-import { CarRequest } from '@types';
+import { useState, useCallback, useEffect, use } from 'react';
+import { Alert } from 'react-native';
+import { carListReq, CarRequest } from '@types';
 import { useToast } from '@context';
 
 import {
@@ -13,8 +14,10 @@ import {
     getCVTService,
     modelService
 } from '@services/cars';
+import { useNavigation } from '@react-navigation/native';
 
 export const useCars = () => {
+    const { goBack } = useNavigation();
     const { showToast } = useToast();
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
@@ -24,8 +27,7 @@ export const useCars = () => {
     const [cvtTypes, setCVTTypes] = useState([]);
     const [gasTypes, setGasTypes] = useState([]);
     const [carDetails, setCarDetails] = useState([]);
-
-
+    const [cars, setCars] = useState([]);
 
     const getBrands = useCallback(
         async () => {
@@ -42,8 +44,6 @@ export const useCars = () => {
         },
         [],
     );
-
-
 
     const getModels = useCallback(
         async (brandId: string) => {
@@ -130,14 +130,17 @@ export const useCars = () => {
                 setLoading(false);
                 return;
             }
-            alert('Success');
+            Alert.alert('تم الارسال',`تم استلام طلبكم وسنتواصل معكم على الواتس اب في أقرب وقت
+شكرا لإختياركم تطبيق سيارات واليات العراق`);
+            goBack();
+            //navigation.navigate('HomeScreen');
             setLoading(false);
         },
         [],
     );
 
     const getCarList = useCallback(
-        async (req: CarRequest) => {
+        async (req: carListReq) => {
             setLoading(true);
             const res = await carListService(req);
             if (res.status !== 200) {
@@ -146,7 +149,7 @@ export const useCars = () => {
                 return;
             }
             setLoading(false);
-            return res.data.data;
+            setCars(res.data.data);
         },
         [],
     );
@@ -162,6 +165,7 @@ export const useCars = () => {
         getCarDetails,
         createCarRequest,
         getCarList,
+        cars,
         brands,
         models,
         engineSizes,
