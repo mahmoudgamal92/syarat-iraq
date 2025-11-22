@@ -26,7 +26,7 @@ export const ImageList: React.FC<ImageListProps> = ({
     return (
         <Modal
             visible={visible}
-            transparent // ✅ Makes the background transparent
+            transparent
             animationType="fade" // Optional: adds fade animation
             onRequestClose={onClose}
         >
@@ -42,13 +42,13 @@ export const ImageList: React.FC<ImageListProps> = ({
 
                         <Text style={styles.title}>{title}</Text>
                     </View>
-
                     {/* Images List */}
                     <ScrollView contentContainerStyle={{ alignItems: "center" }}>
                         {images.map((uri, index) => (
                             <Image
                                 key={index}
-                                source={{ uri }}
+                                // source={{ uri }}
+                                source={{ uri: 'https://services.sayarat-iraq.com/uploads/ImagesRepository/' + uri }}
                                 resizeMode="cover"
                                 style={styles.image}
                             />

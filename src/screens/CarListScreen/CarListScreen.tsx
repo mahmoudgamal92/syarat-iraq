@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import {
     View,
     FlatList,
+    Linking,
 } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
 import { BaseLayout, Header, Loader, Tabber, ImageList, CarOptions, ActionButton, EmptyListComponent } from '@components';
@@ -14,13 +15,18 @@ import { SCREENS } from '@navigation';
 export const CarListScreen = ({ route, navigation }) => {
     const { type, filters } = route?.params ?? {};
     const { loading, cars, getCarList } = useCars();
+    const [carList, setCars] = React.useState([]);
     const [selectedTab, setSelectedTab] = React.useState<number | string>('');
-
     const [modalVisible, setModalVisible] = React.useState(false);
     const [images, setImages] = React.useState<string[]>([]);
 
     const [optionaVisible, setOptionsVisible] = React.useState(false);
     const [options, setOptions] = React.useState<string>('');
+
+    useEffect(() => {
+        setCars(cars);
+    }, [cars]);
+
 
     useEffect
         (() => {
@@ -44,6 +50,29 @@ export const CarListScreen = ({ route, navigation }) => {
             )
         }, []);
 
+
+    const filterList = (tab) => {
+        setSelectedTab(tab);
+        if (!cars || cars.length === 0) return;
+        let sorted = [...cars];
+
+        if (tab === 1) {
+            // أقل سعر
+            sorted.sort((a, b) => a.carPrice - b.carPrice);
+        } else if (tab === 2) {
+            // أعلى سعر
+            sorted.sort((a, b) => b.carPrice - a.carPrice);
+        } else if (tab === 0) {
+            // أقل كيلومترات
+            sorted.sort((a, b) => a.carOdometer - b.carOdometer);
+        }
+        // update the SAME state used in FlatList
+        setCars(sorted);
+    };
+
+
+
+
     return (
         <BaseLayout>
             <Header />
@@ -54,7 +83,7 @@ export const CarListScreen = ({ route, navigation }) => {
                 backgroundColor: '#FFF'
             }}>
                 {type == ACTION.BUY &&
-                    <Tabber data={carFilters} selected={selectedTab} onSelect={setSelectedTab} />
+                    <Tabber data={carFilters} selected={selectedTab} onSelect={filterList} />
                 }
 
                 {type == ACTION.EXCHANGE &&
@@ -79,7 +108,7 @@ export const CarListScreen = ({ route, navigation }) => {
                 />
 
                 <FlatList
-                    data={cars}
+                    data={carList}
                     renderItem={({ item }) => (
                         <CarItem
                             key={item.id}
@@ -88,7 +117,7 @@ export const CarListScreen = ({ route, navigation }) => {
                                 setImages(imageArray);
                                 setModalVisible(true);
                             }}
-                            onShowVideo={() => console.log("Show video for:", item.id)}
+                            onShowVideo={() => Linking.openURL(item.carDescription)}
                             onShowDetails={() => {
                                 setOptions(item.moreDetails);
                                 setOptionsVisible(true)

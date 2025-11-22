@@ -122,7 +122,7 @@ export const useCars = () => {
 
 
     const createCarRequest = useCallback(
-        async (req: CarRequest) => {
+        async (req: FormData) => {
             setLoading(true);
             const res = await carRequestService(req);
             if (res.status !== 200) {
@@ -130,7 +130,7 @@ export const useCars = () => {
                 setLoading(false);
                 return;
             }
-            Alert.alert('تم الارسال',`تم استلام طلبكم وسنتواصل معكم على الواتس اب في أقرب وقت
+            Alert.alert('تم الارسال', `تم استلام طلبكم وسنتواصل معكم على الواتس اب في أقرب وقت
 شكرا لإختياركم تطبيق سيارات واليات العراق`);
             goBack();
             //navigation.navigate('HomeScreen');

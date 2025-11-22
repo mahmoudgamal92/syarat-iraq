@@ -13,69 +13,6 @@ export const features = [
   { id: 8, icon: 'airbag', text: 'كشن تدفئة' },
 ];
 
-export const carList = [
-  {
-    id: '1',
-    name: 'تويوتا كامري 2020',
-    engine: '2.5L',
-    condition: 'حادث',
-    origin: 'اليابان',
-    cylinders: 4,
-    color: 'أبيض',
-    location: 'الرياض',
-    price: '100,000 ر.س',
-    phone: '0501234567',
-    kilometers: '55',
-    gasType: 'بنزين',
-    image: require('@assets/images/carList.jpg'), // make sure to add the image in assets
-  },
-  {
-    id: '2',
-    name: 'مرسيدس C200 2019',
-    engine: '2.0L',
-    condition: 'حادث',
-    origin: 'ألمانيا',
-    cylinders: 4,
-    color: 'أسود',
-    location: 'جدة',
-    price: '120,000 ر.س',
-    phone: '0507654321',
-    kilometers: '55',
-    gasType: 'بنزين',
-    image: require('@assets/images/carList.jpg'),
-  },
-  {
-    id: '3',
-    name: 'نيسان ألتيما 2021',
-    engine: '2.5L',
-    condition: 'بيها حادث',
-    origin: 'اليابان',
-    cylinders: 4,
-    color: 'أزرق',
-    location: 'الدمام',
-    price: '95,000 ر.س',
-    phone: '0501122334',
-    kilometers: '55',
-    gasType: 'بنزين',
-    image: require('@assets/images/carList.jpg'),
-  },
-  {
-    id: '4',
-    name: 'بي إم دبليو 320i 2020',
-    engine: '2.0L',
-    condition: 'كلين',
-    origin: 'ألمانيا',
-    cylinders: 4,
-    color: 'رمادي',
-    location: 'الخبر',
-    price: '130,000 ر.س',
-    phone: '0509988776',
-    kilometers: '55',
-    gasType: 'بنزين',
-    image: require('@assets/images/carList.jpg'),
-  },
-];
-
 export const countries =
   [
     { "label": "اليابان", "value": "اليابان" },
@@ -118,6 +55,8 @@ export const carType = [
   { label: 'جديد', value: 1, },
 
 ];
+
+
 export const carStatus = [
   { label: 'بها حادث', value: 3, },
   { label: 'بدون حادث', value: 2, },

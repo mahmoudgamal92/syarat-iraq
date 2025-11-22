@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, ScrollView, ImageBackground } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, ScrollView, ImageBackground } from 'react-native';
 import { Ionicons, FontAwesome5, AntDesign } from '@expo/vector-icons';
 
 import * as ImagePicker from 'expo-image-picker';
@@ -7,7 +7,7 @@ import { useFormik } from 'formik';
 
 import { useCars } from '@hooks';
 import { ACTION, CarRequest } from '@types';
-import { BaseLayout, Dropdown, Header, ValidationError, OptionsSheetRef, OptionsSheet, OptionItem } from '@components';
+import { BaseLayout, Dropdown, Header, ValidationError, OptionsSheetRef, OptionsSheet, OptionItem, Loader } from '@components';
 import { getValidationSchema, initialValues } from './const';
 import { countries, clinders, carStatus, cities } from '@constants';
 import { colors } from '@constants/colors';
@@ -47,7 +47,6 @@ export const CarFormScreen = ({ route, navigation }) => {
 
 
   const handleSelectedOptions = (selected) => {
-    //console.log(selected);
     setOptions(selected);
   };
 
@@ -55,25 +54,18 @@ export const CarFormScreen = ({ route, navigation }) => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsMultipleSelection: true,
-      base64: true,
-      quality: 0.7,
+      quality: 0.8,
     });
 
     if (!result.canceled && result.assets) {
       const selected = result.assets.map(asset => ({
         uri: asset.uri,
-        base64: asset.base64,
+        type: asset.mimeType || 'image/jpeg',
+        name: asset.fileName || `image_${Date.now()}.jpg`,
       }));
 
-      // merge all base64 into ONE big string (no separators)
-      const mergedBase64 = selected.map(img => img.base64).join('');
-
-      // add the base64 header prefix
-      const finalBase64String = `data:image/png;base64,${mergedBase64}`;
-
       setImages(selected);
-      formik.setFieldValue("carImages", finalBase64String);
-      console.log('finalBase64String', finalBase64String)
+      formik.setFieldValue("carImages", selected);
     }
   };
 
@@ -82,39 +74,36 @@ export const CarFormScreen = ({ route, navigation }) => {
     initialValues,
     validationSchema: getValidationSchema(type),
     onSubmit: async (values) => {
-      const formData: CarRequest = {
-        requestType: type === ACTION.BUY ? 1 : 2,
-        brandId: values.brandId,
-        modalId: values.modalId,
-        carEngineSizeId: values.carEngineSizeId,
-        cvtTypeId: values.cvtTypeId,
-        gasTypeId: values.gasTypeId,
-        carImportCountry: values.carImportCountry,
-        carYear: Number(values.carYear),
-        clinderNumber: Number(values.clinderNumber),
-        //carType: Number(values.carType),
-        carStatus: Number(values.carStatus),
-        carNumber: values.carNumber,
-        carLocation: values.carLocation,
-        carOdometer: Number(values.carOdometer),
-        carPrice: Number(values.carPrice),
-        phoneNumber: values.phoneNumber,
-        replaceByModalId: values.replaceByModalId,
-        carImages: values.carImages,
-        replaceByBrandId: values.replaceByBrandId,
-        fromYear: values.fromYear,
-        toYear: values.toYear,
-        moreDetailIds: options.map(o => o.id).join(','),
-      };
-
+      const formData = new FormData();
+      formData.append('requestType', String(type === ACTION.SELL ? 1 : 2));
+      formData.append('brandId', String(values.brandId));
+      formData.append('modalId', String(values.modalId));
+      formData.append('carEngineSizeId', String(values.carEngineSizeId));
+      formData.append('cvtTypeId', String(values.cvtTypeId));
+      formData.append('gasTypeId', String(values.gasTypeId));
+      formData.append('carImportCountry', values.carImportCountry);
+      formData.append('carYear', String(values.carYear));
+      formData.append('clinderNumber', String(values.clinderNumber));
+      formData.append('carStatus', String(values.carStatus));
+      formData.append('carNumber', values.carNumber);
+      formData.append('carLocation', values.carLocation);
+      formData.append('carOdometer', Number(values.carOdometer));
+      formData.append('carPrice', Number(values.carPrice));
+      formData.append('phoneNumber', values.phoneNumber);
+      formData.append('replaceByModalId', String(values.replaceByModalId));
+      formData.append('replaceByBrandId', String(values.replaceByBrandId));
+      formData.append('fromYear', values.fromYear);
+      formData.append('toYear', values.toYear);
+      formData.append('moreDetailIds', options.map(o => o.id).join(','));
+      values.carImages.length > 0 && (
+        values.carImages.forEach((img, index) => {
+          formData.append('carImages', { uri: img.uri, type: img.type, name: img.name } as any);
+        }));
       if (type === ACTION.BUY) {
         navigation.navigate(SCREENS.CARS.LIST, {
           type,
           filters: values
         });
-        // console.log('errors', formik.errors)
-        // console.log('type', type)
-        // console.log('formData', values);
         return;
       }
       createCarRequest(formData);
@@ -125,6 +114,7 @@ export const CarFormScreen = ({ route, navigation }) => {
   return (
     <BaseLayout>
       <View style={styles.container}>
+        <Loader visible={loading} />
         <Header />
         <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 10 }}>
           <Text style={styles.instructions}>
@@ -141,7 +131,8 @@ export const CarFormScreen = ({ route, navigation }) => {
             {type === ACTION.BUY
               ? 'حدد التفاصيل في الأسفل ودوس على زر البحث'
               : type === ACTION.EXCHANGE ?
-                'حدد التفاصيل في الأسفل ودوس على زر البحث'
+                'حدد التفاصيل في الأسفل و دوس علي اضغط هنا لارسال الطلب'
+
                 : 'أكمل التفاصيل في الأسفل'
             }
           </Text>
@@ -316,27 +307,29 @@ export const CarFormScreen = ({ route, navigation }) => {
 
           {/* Kilometers & Price */}
 
-          <ValidationError<CarRequest> formik={formik} fields={['carOdometer', 'carPrice']} />
-          <View style={styles.row}>
-            <TextInput
-              style={styles.input}
-              placeholder="شكد ماشيه السياره"
-              value={formik.values.carOdometer?.toString()}
-              onChangeText={formik.handleChange("carOdometer")}
-              keyboardType="numeric"
-              placeholderTextColor={'#999'}
-            />
-            {type === ACTION.SELL && (
-              <TextInput
-                style={styles.input}
-                placeholder="السعر بالدولار"
-                value={formik.values.carPrice?.toString()}
-                onChangeText={formik.handleChange("carPrice")}
-                keyboardType="numeric"
-                placeholderTextColor={'#999'}
-              />
-            )}
-          </View>
+          {type === ACTION.SELL && (
+            <>
+              <ValidationError<CarRequest> formik={formik} fields={['carOdometer', 'carPrice']} />
+              <View style={styles.row}>
+                <TextInput
+                  style={styles.input}
+                  placeholder="شكد ماشيه السياره"
+                  value={formik.values.carOdometer?.toString()}
+                  onChangeText={formik.handleChange("carOdometer")}
+                  keyboardType="numeric"
+                  placeholderTextColor={'#999'}
+                />
+                <TextInput
+                  style={styles.input}
+                  placeholder="السعر بالدولار"
+                  value={formik.values.carPrice?.toString()}
+                  onChangeText={formik.handleChange("carPrice")}
+                  keyboardType="numeric"
+                  placeholderTextColor={'#999'}
+                />
+              </View>
+            </>
+          )}
 
           {/* EXCHANGEe field */}
           {type === ACTION.EXCHANGE && (
@@ -376,7 +369,6 @@ export const CarFormScreen = ({ route, navigation }) => {
               </View>
             </View>
           )}
-
           {/* Images */}
           {type === ACTION.SELL && (
             <View style={styles.formContainer}>
@@ -427,6 +419,7 @@ export const CarFormScreen = ({ route, navigation }) => {
               )}
             </View>
           )}
+
 
           {/* Additional Options */}
           {type === ACTION.SELL && (

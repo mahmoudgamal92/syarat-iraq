@@ -7,7 +7,9 @@ import {
     Linking,
     StyleSheet,
 } from "react-native";
-import { Ionicons, AntDesign, Entypo, FontAwesome } from "@expo/vector-icons";
+import { Ionicons, Entypo, FontAwesome, AntDesign } from "@expo/vector-icons";
+import moment from "moment";
+moment.locale('ar');
 
 interface CarImage {
     imageBase64: string;
@@ -26,7 +28,11 @@ interface Car {
     price?: string;
     phone?: string;
     phoneNumber?: string;
+    carStatus?: string;
+    carLocation?: string;
+    carNumber?: string;
     carImages?: CarImage[];
+    requestDate: string
 }
 
 interface CarItemProps {
@@ -68,8 +74,8 @@ export const CarItem: React.FC<CarItemProps> = ({
             {/* Car Info */}
             <View style={styles.row}>
                 <View style={styles.carDetails}>
-                    <Text style={styles.carName}>{car.name}</Text>
-
+                    <Text style={styles.reqDate}>{
+                        moment(car.requestDate).startOf('hour').fromNow()}</Text>
                     <View style={{
                         backgroundColor: '#FFD700',
                         borderRadius: 10,
@@ -119,11 +125,7 @@ export const CarItem: React.FC<CarItemProps> = ({
 
 
                     <Image
-                        source={
-                            getImageURL(car.mainImage)
-                                ? { uri: getImageURL(car.mainImage) }
-                                : require("@assets/images/car_placeholder.png")
-                        }
+                        source={{ uri: 'https://services.sayarat-iraq.com/uploads/ImagesRepository/' + car.mainImage }}
                         style={styles.carImage}
                         resizeMode="cover"
                     />
@@ -138,10 +140,10 @@ export const CarItem: React.FC<CarItemProps> = ({
                     <Entypo name="images" size={16} color="#FFF" />
                 </TouchableOpacity>
 
-                {/* <TouchableOpacity style={styles.callButton} onPress={onShowVideo}>
+                <TouchableOpacity style={styles.callButton} onPress={onShowVideo}>
                     <Text style={styles.callText}>عرض الفيديو</Text>
                     <AntDesign name="camera" size={16} color="#FFF" />
-                </TouchableOpacity> */}
+                </TouchableOpacity>
 
                 <TouchableOpacity style={styles.callButton} onPress={onShowDetails}>
                     <Text style={styles.callText}>باقي المواصفات</Text>
@@ -151,7 +153,7 @@ export const CarItem: React.FC<CarItemProps> = ({
                 <TouchableOpacity style={styles.callButton} onPress={handleCall}>
                     <Text style={styles.callText}>تواصل </Text>
 
-                    <Ionicons name="call" size={20} color="#fff" />
+                    <Ionicons name="call" size={16} color="#fff" />
                 </TouchableOpacity>
             </View>
         </View>
@@ -175,10 +177,12 @@ const styles = StyleSheet.create({
         alignItems: 'flex-end',
         paddingHorizontal: 10
     },
-    carName: {
-        fontFamily: "Bold",
-        fontSize: 16,
+    reqDate: {
+        fontFamily: "Regular",
+        color: 'grey',
+        fontSize: 14,
         marginBottom: 5,
+        textAlign: 'left'
     },
     carHint: {
         color: "#888",
@@ -221,14 +225,14 @@ const styles = StyleSheet.create({
     },
     callText: {
         color: "#FFF",
-        fontSize: 10,
-        fontFamily: "Bold",
+        fontSize: 8,
+        fontFamily: "Regular",
     },
     actions: {
         flexDirection: "row",
         justifyContent: "space-between",
-        paddingHorizontal: 10,
-        columnGap: 5,
+        paddingHorizontal: 5,
+        columnGap: 2,
         paddingVertical: 10,
     },
 });

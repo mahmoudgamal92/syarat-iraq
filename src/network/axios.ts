@@ -10,7 +10,11 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
     async (config) => {
         config.headers.Authorization = `Bearer ${AUTHORIZATION_TOKEN}`;
-        config.headers['Content-Type'] = 'application/json';
+        if (config.data instanceof FormData) {
+            config.headers['Content-Type'] = 'multipart/form-data';
+        } else {
+            config.headers['Content-Type'] = 'application/json';
+        }
         return config;
     },
     (error) => Promise.reject(error)

@@ -9,6 +9,10 @@ export const styles = StyleSheet.create({
     width: 100,
     height: 100,
     marginBottom: 5,
+    borderRadius: 50,
+    resizeMode: 'contain',
+    borderColor: '#FC6A04',
+    borderWidth: 2,
   },
   buttonText: {
     fontSize: 14,

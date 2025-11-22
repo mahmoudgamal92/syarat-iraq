@@ -81,7 +81,7 @@ export const useMechanism = () => {
 
 
     const createMechanismRequest = useCallback(
-        async (req: MechanismRequest) => {
+        async (req: FormData) => {
             setLoading(true);
             const res = await mechanismRequestService(req);
             if (res.status !== 200) {

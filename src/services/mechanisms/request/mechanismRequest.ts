@@ -1,13 +1,10 @@
 import { request } from '@network';
-import { MechanismRequest } from '@types';
 
-export const mechanismRequestService = async (body: MechanismRequest) => {
+export const mechanismRequestService = async (body: FormData) => {
     const res = request({
         method: 'post',
         path: '/MechanismRequest',
-        data: {
-            ...body
-        }
+        data: body
     }
     );
     return res;

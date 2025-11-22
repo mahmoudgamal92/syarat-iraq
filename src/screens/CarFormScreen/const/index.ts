@@ -8,8 +8,6 @@ const buySchema = Yup.object().shape({
     modalId: Yup.string().required("اختر الفئة"),
     fromYear: Yup.string().required("اختر الموديل من"),
     toYear: Yup.string().required("اختر الموديل الي"),
-
-
 });
 
 const exchangeSchema = Yup.object().shape({
@@ -70,7 +68,7 @@ export const initialValues: CarRequest = {
     phoneNumber: "",         // string
     replaceByBrandId: "",    // string
     replaceByModalId: "",    // string
-    moreDetailIds: "",       // string
+    moreDetailIds: "xx,xx",       // string
     carImages: "",           // array
     requestType: 1,          // number (1-buy, 2-sell)
 };

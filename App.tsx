@@ -6,6 +6,8 @@ import { useFonts } from "expo-font";
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { ToastProvider } from '@context';
+import moment from "moment";
+moment.locale('ar');
 
 export default function App() {
 

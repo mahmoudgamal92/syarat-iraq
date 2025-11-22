@@ -41,7 +41,7 @@ export const HomeScreen = ({ navigation }) => {
               })}
               style={{
                 flexDirection: 'row',
-                backgroundColor: 'green',
+                backgroundColor: '#FC6A04',
                 padding: 5,
                 borderRadius: 5
               }}>
@@ -58,18 +58,18 @@ export const HomeScreen = ({ navigation }) => {
             <Categorey
               onPress={() => navigation.navigate(SCREENS.CARS.LIST, { type: 'exchange' })}
               text={'آراوس سيارتي'}
-              icon={require('@assets/images/handshake.png')}
+              icon={require('@assets/images/exchange.png')}
             />
 
             <Categorey
               onPress={() => navigation.navigate(SCREENS.CARS.FORM, { type: 'buy' })}
               text={'اشتري سياره'}
-              icon={require('@assets/images/handshake.png')}
+              icon={require('@assets/images/buy.png')}
             />
             <Categorey
               onPress={() => navigation.navigate(SCREENS.CARS.FORM, { type: 'sell' })}
               text={'ابيع سيارتي'}
-              icon={require('@assets/images/car.png')}
+              icon={require('@assets/images/sell.png')}
             />
           </View>
         </View>
@@ -89,7 +89,7 @@ export const HomeScreen = ({ navigation }) => {
               onPress={() => navigation.navigate(SCREENS.VECHILE.LIST)}
               style={{
                 flexDirection: 'row',
-                backgroundColor: 'green',
+                backgroundColor: '#FC6A04',
                 padding: 5,
                 borderRadius: 5
               }}>
@@ -111,7 +111,7 @@ export const HomeScreen = ({ navigation }) => {
                 })
               }}
               text={'ابيع آليتي'}
-              icon={require('@assets/images/bulldozer.png')} />
+              icon={require('@assets/images/sell-machine.png')} />
             <Categorey
               onPress={() => {
                 navigation.navigate(SCREENS.VECHILE.TYPE, {
@@ -119,7 +119,7 @@ export const HomeScreen = ({ navigation }) => {
                 })
               }}
               text={' اشتري آلية'}
-              icon={require('@assets/images/louder.png')} />
+              icon={require('@assets/images/buy-machine.png')} />
           </View>
         </View>
       </ScrollView>

@@ -9,7 +9,6 @@ import { ACTION, carFilters } from '@types';
 
 export const VechileListScreen = ({ route, navigation }) => {
     const { type, filters } = route?.params ?? {};
-    console.log('filters', filters)
     const { loading, mechanisms, getMechanismList } = useMechanism();
     const [selectedTab, setSelectedTab] = React.useState<number | string>('');
 
@@ -82,6 +81,11 @@ export const VechileListScreen = ({ route, navigation }) => {
                         />)}
                     keyExtractor={(item) => item.id.toString()}
                     ListEmptyComponent={<EmptyListComponent type='mechanism' />}
+                    contentContainerStyle={{
+                        flexGrow: 1,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}
                 />
 
             </View>

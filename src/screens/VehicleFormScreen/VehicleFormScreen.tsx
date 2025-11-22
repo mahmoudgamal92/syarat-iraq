@@ -1,22 +1,21 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Image, ScrollView, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { useFormik } from 'formik';
 
 import { useMechanism } from '@hooks';
-import { MechanismRequest } from '@types';
+import { ACTION, MechanismRequest } from '@types';
 
 import { countries, cities, vechileStatus } from '@constants';
 import { BaseLayout, Dropdown, Header, ValidationError } from '@components';
 
 import { getValidationSchema, initialValues } from './const';
 import { styles } from './styles';
+import { SCREENS } from '@navigation';
 
-export const VehicleFormScreen = ({ route }) => {
+export const VehicleFormScreen = ({ route, navigation }) => {
     const { mechanism, type } = route?.params ?? {};
-    // console.log('mechanism', mechanism);
-    console.log('type', type);
     const { loading, createMechanismRequest, getMechanismList } = useMechanism();
     const {
         brands,
@@ -34,21 +33,21 @@ export const VehicleFormScreen = ({ route }) => {
         getMehcanismEngineTypes();
     }, []);
 
+
     const pickImage = async () => {
         const result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsMultipleSelection: true,
-            base64: true,
-            quality: 0.7,
+            quality: 0.8,
         });
-
         if (!result.canceled && result.assets) {
             const selected = result.assets.map(asset => ({
                 uri: asset.uri,
-                base64: asset.base64,
+                type: asset.mimeType || 'image/jpeg',
+                name: asset.fileName || `image_${Date.now()}.jpg`,
             }));
             setImages(selected);
-            formik.setFieldValue("carImages", selected);
+            formik.setFieldValue("mechanismImages", selected);
         }
     };
 
@@ -56,7 +55,7 @@ export const VehicleFormScreen = ({ route }) => {
         initialValues,
         validationSchema: getValidationSchema(type),
         onSubmit: async (values) => {
-            const formData: MechanismRequest = {
+            const searchForm: MechanismRequest = {
                 mechanismTypeId: mechanism.id,
                 mechanismBrandId: values.mechanismBrandId,
                 mechanismModalId: values.mechanismModalId,
@@ -71,15 +70,38 @@ export const VehicleFormScreen = ({ route }) => {
                 phoneNumber: values.phoneNumber,
                 mechanismImages: values.mechanismImages,
             };
-            if (type === 'buy') {
-                //console.log('formData', formData)
-                const cars = await getMechanismList(formData);
+
+            const formData = new FormData();
+            formData.append("mechanismTypeId", mechanism.id.toString());
+            formData.append("mechanismBrandId", values.mechanismBrandId.toString());
+            formData.append("mechanismModalId", values.mechanismModalId.toString());
+            formData.append("mechanismEngineTypeId", values.mechanismEngineTypeId.toString());
+            formData.append("mechanismImportCountry", values.mechanismImportCountry);
+            formData.append("mechanismYear", values.mechanismYear.toString());
+            formData.append("mechanismStatus", values.mechanismStatus.toString());
+            formData.append("mechanismLocation", values.mechanismLocation);
+            formData.append("mechanismNumber", values.mechanismNumber.toString());
+            formData.append("mechanismOdometer", values.mechanismOdometer.toString());
+            formData.append("mechanismPrice", values.mechanismPrice.toString());
+            formData.append("phoneNumber", values.phoneNumber);
+            formData.append("ImageFileName", '');
+            values.mechanismImages.length > 0 && (
+                values.mechanismImages.forEach((img, index) => {
+                    formData.append('mechanismImages', {
+                        uri: img.uri,
+                        type: img.type,
+                        name: img.name,
+                    } as any);
+                }));
+
+            if (type === ACTION.BUY) {
+                navigation.navigate(SCREENS.VECHILE.LIST, {
+                    type,
+                    filters: values
+                });
                 return;
-                // cars.length === 0 ? alert('لا يوجد سيارات متوفره حاليا') :
-                //     alert(`يوجد ${cars.length} سيارات متوفره حاليا`);
             }
             createMechanismRequest(formData);
-            //console.log(formData);
         },
     });
 
@@ -194,10 +216,6 @@ export const VehicleFormScreen = ({ route }) => {
                         />
 
                     </View>
-
-
-
-
 
                     {/* Kilometers & Price */}
                     {type === 'sell' && (
