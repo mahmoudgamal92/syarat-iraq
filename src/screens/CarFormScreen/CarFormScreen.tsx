@@ -111,12 +111,20 @@ export const CarFormScreen = ({ route, navigation }) => {
     },
   });
 
+
+  const scrollRef = useRef<ScrollView>(null);
+
+
+
   return (
     <BaseLayout>
       <View style={styles.container}>
         <Loader visible={loading} />
         <Header />
-        <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 10 }}>
+        <ScrollView
+          ref={scrollRef}
+          contentContainerStyle={{ flexGrow: 1, padding: 10 }}
+        >
           <Text style={styles.instructions}>
             {type === ACTION.BUY ?
               'تدور علي سياره ؟؟'
@@ -318,6 +326,10 @@ export const CarFormScreen = ({ route, navigation }) => {
                   onChangeText={formik.handleChange("carOdometer")}
                   keyboardType="numeric"
                   placeholderTextColor={'#999'}
+                  returnKeyType="done"
+                  onSubmitEditing={() => {
+                    scrollRef.current?.scrollToEnd({ animated: true });
+                  }}
                 />
                 <TextInput
                   style={styles.input}
@@ -326,6 +338,10 @@ export const CarFormScreen = ({ route, navigation }) => {
                   onChangeText={formik.handleChange("carPrice")}
                   keyboardType="numeric"
                   placeholderTextColor={'#999'}
+                  returnKeyType="done"
+                  onSubmitEditing={() => {
+                    scrollRef.current?.scrollToEnd({ animated: true });
+                  }}
                 />
               </View>
             </>

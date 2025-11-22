@@ -73,6 +73,29 @@ export const CarListScreen = ({ route, navigation }) => {
 
 
 
+    const openVideoUrl = async (url) => {
+        if (!url || typeof url !== "string") {
+            alert("الرابط غير صالح");
+            return;
+        }
+
+        try {
+            const supported = await Linking.canOpenURL(url);
+
+            if (supported) {
+                await Linking.openURL(url);
+            } else {
+                alert("لا يمكن فتح رابط الفيديو");
+            }
+
+        } catch (error) {
+            alert("حدث خطأ أثناء محاولة فتح الرابط");
+        }
+    };
+
+
+
+
     return (
         <BaseLayout>
             <Header />
@@ -117,7 +140,7 @@ export const CarListScreen = ({ route, navigation }) => {
                                 setImages(imageArray);
                                 setModalVisible(true);
                             }}
-                            onShowVideo={() => Linking.openURL(item.carDescription)}
+                            onShowVideo={() => openVideoUrl(item.carDescription)}
                             onShowDetails={() => {
                                 setOptions(item.moreDetails);
                                 setOptionsVisible(true)

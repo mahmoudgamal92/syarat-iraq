@@ -32,12 +32,11 @@ export const styles = StyleSheet.create({
   },
   welcomeSection: {
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 10,
   },
   welcomeImage: {
     resizeMode: 'contain',
     height: 120,
-    marginBottom: 10,
   },
   welcomeText: {
     fontSize: 22,
@@ -50,12 +49,10 @@ export const styles = StyleSheet.create({
     color: '#000',
     textAlign: 'center',
     fontFamily: 'Regular',
-    paddingHorizontal: 20,
   },
   section: {
     width: '100%',
     alignItems: 'center',
-    marginBottom: 20,
   },
   sectionTitle: {
     fontSize: 18,

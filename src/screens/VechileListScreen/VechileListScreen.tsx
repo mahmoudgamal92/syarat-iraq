@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import {
     View,
     FlatList,
+    Linking,
 } from 'react-native';
 import { BaseLayout, Header, Loader, Tabber, ImageList, CarOptions, VechileItem, EmptyListComponent } from '@components';
 import { useMechanism } from '@hooks';
@@ -35,6 +36,31 @@ export const VechileListScreen = ({ route, navigation }) => {
                 }
             )
         }, []);
+
+
+
+    const openVideoUrl = async (url) => {
+        if (!url || typeof url !== "string") {
+            alert("الرابط غير صالح");
+            return;
+        }
+
+        try {
+            const supported = await Linking.canOpenURL(url);
+
+            if (supported) {
+                await Linking.openURL(url);
+            } else {
+                alert("لا يمكن فتح رابط الفيديو");
+            }
+
+        } catch (error) {
+            alert("حدث خطأ أثناء محاولة فتح الرابط");
+        }
+    };
+
+
+
 
     return (
         <BaseLayout>
@@ -73,7 +99,7 @@ export const VechileListScreen = ({ route, navigation }) => {
                                 setImages(imageArray);
                                 setModalVisible(true);
                             }}
-                            onShowVideo={() => console.log("Show video for:", item.id)}
+                            onShowVideo={() => openVideoUrl(item.vechileDescription)}
                             onShowDetails={() => {
                                 setOptions(item.moreDetails);
                                 setOptionsVisible(true)
