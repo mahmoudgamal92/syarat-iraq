@@ -9,8 +9,8 @@ import { BaseLayout, Header, Loader, Tabber, ImageList, CarOptions, ActionButton
 import { useCars } from '@hooks';
 import { ACTION, carFilters } from '@types';
 import { CarItem } from '@components';
-import { styles } from './styles';
 import { SCREENS } from '@navigation';
+import { openUrl } from '@utils';
 
 export const CarListScreen = ({ route, navigation }) => {
     const { type, filters } = route?.params ?? {};
@@ -73,29 +73,6 @@ export const CarListScreen = ({ route, navigation }) => {
 
 
 
-    const openVideoUrl = async (url) => {
-        if (!url || typeof url !== "string") {
-            alert("الرابط غير صالح");
-            return;
-        }
-
-        try {
-            const supported = await Linking.canOpenURL(url);
-
-            if (supported) {
-                await Linking.openURL(url);
-            } else {
-                alert("لا يمكن فتح رابط الفيديو");
-            }
-
-        } catch (error) {
-            alert("حدث خطأ أثناء محاولة فتح الرابط");
-        }
-    };
-
-
-
-
     return (
         <BaseLayout>
             <Header />
@@ -134,13 +111,14 @@ export const CarListScreen = ({ route, navigation }) => {
                     data={carList}
                     renderItem={({ item }) => (
                         <CarItem
+                            type={type}
                             key={item.id}
                             car={item}
                             onShowImages={(imageArray) => {
                                 setImages(imageArray);
                                 setModalVisible(true);
                             }}
-                            onShowVideo={() => openVideoUrl(item.carDescription)}
+                            onShowVideo={() => openUrl(item.carDescription)}
                             onShowDetails={() => {
                                 setOptions(item.moreDetails);
                                 setOptionsVisible(true)

@@ -71,7 +71,7 @@ export const SplashScreen = ({ navigation }) => {
                     {/* Bottom text */}
                     <View style={styles.bottomTextContainer}>
                         <Text style={styles.bottomText}>
-                            أسهل وأفضل تطبيق للسيارات والآليات في العراق !
+                            تطبيق يخليك تتصفح سيارات وآليات وتضيف إعلانك بسهولة !
                         </Text>
                     </View>
                 </View>

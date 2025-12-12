@@ -84,7 +84,6 @@ export const VehicleFormScreen = ({ route, navigation }) => {
             formData.append("mechanismOdometer", values.mechanismOdometer.toString());
             formData.append("mechanismPrice", values.mechanismPrice.toString());
             formData.append("phoneNumber", values.phoneNumber);
-            formData.append("ImageFileName", '');
             values.mechanismImages.length > 0 && (
                 values.mechanismImages.forEach((img, index) => {
                     formData.append('mechanismImages', {

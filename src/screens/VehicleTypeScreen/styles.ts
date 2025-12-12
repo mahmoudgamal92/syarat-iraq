@@ -1,4 +1,5 @@
 
+import { colors } from '@constants/colors';
 import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
   container: {
@@ -23,18 +24,20 @@ export const styles = StyleSheet.create({
     top: 10,
   },
   image: {
-    width: 100,
-    height: 100,
+    width: 150,
+    height: 150,
+    borderRadius:75,
     marginVertical: 20,
+    borderWidth:2,
+    borderColor:colors.palette.purple
   },
   title: {
     color: '#000',
     fontFamily: 'Bold',
     fontSize: 20,
-    marginBottom: 10,
   },
   grid: {
-    marginTop: 50,
+    marginTop: 10,
     width: '80%',
     flexDirection: 'row',
     flexWrap: 'wrap',

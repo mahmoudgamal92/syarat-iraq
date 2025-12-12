@@ -5,47 +5,47 @@ import {
     Image,
     TouchableOpacity,
     Linking,
-    StyleSheet,
 } from "react-native";
-import { Ionicons, Entypo, FontAwesome } from "@expo/vector-icons";
-
-interface CarImage {
+import { Ionicons, Entypo, AntDesign } from "@expo/vector-icons";
+import moment from "moment";
+import { styles } from "./styles";
+import { IMAGE_URL } from "@constants";
+interface MechanismImage {
     imageBase64: string;
 }
 
 interface Vechile {
     id: string;
-    name: string;
-    mainImage?: string;
-    mechanismEngineType?: string;
-    modalName?: string;
-    mechanismImportCountry?: string;
-    gasType?: string;
-    mechanismOdometer?: string;
-    carPrice?: string;
-    price?: string;
-    phone?: string;
-    phoneNumber?: string;
-    carImages?: CarImage[];
+    mechanismType: string;
+    brandName: string;
+    modalName: string;
+    mechanismEngineType: string;
+    mechanismImportCountry: string;
+    mechanismYear: number;
+    type: string; // "0" from API
+    mechanismStatus: string; // e.g. "Damaged"
+    mechanismLocation: string;
+    mechanismNumber: string;
+    mechanismOdometer: number;
+    mechanismPrice: number;
+    phoneNumber: string;
+    mechanismDescription: string | null;
+    requestDate: string; // ISO date string
+    mainImage: string;
+    mechanismImages: MechanismImage[];
 }
 
-interface CarItemProps {
+interface VechileItemProps {
     vechile: Vechile;
     onShowImages: (images: string[]) => void;
     onShowVideo?: () => void;
-    onShowDetails?: () => void;
 }
 
-export const VechileItem: React.FC<CarItemProps> = ({
+export const VechileItem: React.FC<VechileItemProps> = ({
     vechile,
     onShowImages,
     onShowVideo,
-    onShowDetails,
 }) => {
-    const getImageURL = (image?: string) => {
-        if (!image) return null;
-        return image.replace(/^"|"$/g, "").replace(/\s/g, "").replace(/,+$/, "");
-    };
 
     const handleCall = () => {
         if (!vechile.phoneNumber) return;
@@ -59,7 +59,7 @@ export const VechileItem: React.FC<CarItemProps> = ({
 
     const handleShowImages = () => {
         const imageArray =
-            vechile.carImages?.map((item) => item.imageBase64) ?? [];
+            vechile.mechanismImages?.map((item) => item.imageBase64) ?? [];
         onShowImages(imageArray);
     };
 
@@ -68,8 +68,24 @@ export const VechileItem: React.FC<CarItemProps> = ({
             {/* Car Info */}
             <View style={styles.row}>
                 <View style={styles.carDetails}>
-                    <Text style={styles.carName}>{vechile.name}</Text>
-                    <Text style={styles.carHint}>منذ ساعه</Text>
+                    <Text style={styles.reqDate}>
+                        {moment(vechile.requestDate).startOf('hour').fromNow()}
+                    </Text>
+
+                    <View style={{
+                        backgroundColor: '#FFD700',
+                        borderRadius: 10,
+                        paddingHorizontal: 10
+                    }}>
+                        <Text style={[styles.info, {
+                            fontFamily: 'Bold',
+                            color: '#000'
+                        }]}>
+                            السعر: <Text style={{}}>{vechile.mechanismPrice}</Text> دولار
+                        </Text>
+                    </View>
+
+
 
                     <Text style={styles.info}>
                         المحرك: <Text style={styles.highlight}>{vechile.mechanismEngineType}</Text>
@@ -81,33 +97,50 @@ export const VechileItem: React.FC<CarItemProps> = ({
                         الوارد:{" "}
                         <Text style={styles.highlight}>{vechile.mechanismImportCountry}</Text>
                     </Text>
-                    <Text style={styles.info}>
-                        نوع الوقود: <Text style={styles.highlight}>{vechile.gasType}</Text>
-                    </Text>
+
                     <Text style={styles.info}>
                         عدد الكيلومترات:{" "}
                         <Text style={styles.highlight}>{vechile.mechanismOdometer}</Text>
                     </Text>
+
+
                     <Text style={styles.info}>
-                        السعر: <Text style={styles.highlight}>{vechile.carPrice}</Text>
+                        مكان التواجد:{" "}
+                        <Text style={styles.highlight}>{vechile.mechanismLocation}</Text>
                     </Text>
+
+
+
+                    <Text style={styles.info}>
+                        رقم اللوحه :{" "}
+                        <Text style={styles.highlight}>{vechile.mechanismNumber}</Text>
+                    </Text>
+
+
+
+                    <Text style={styles.info}>
+                        سنه الصنع  :{" "}
+                        <Text style={styles.highlight}>{vechile.mechanismYear}</Text>
+                    </Text>
+
+
+
+
+                    <Text style={styles.info}>
+                        حاله الاليه :{" "}
+                        <Text style={styles.highlight}>{vechile.mechanismStatus}</Text>
+                    </Text>
+
                 </View>
 
                 <View style={{ width: "50%", height: 200 }}>
-
-
                     <Image
-                        source={
-                            getImageURL(vechile.mainImage)
-                                ? { uri: getImageURL(vechile.mainImage) }
-                                : require("@assets/images/excavator.png")
-                        }
+                        source={{ uri: IMAGE_URL + vechile.mainImage }}
                         style={styles.carImage}
                         resizeMode="cover"
                     />
                 </View>
             </View>
-
 
             {/* Action Buttons */}
             <View style={styles.actions}>
@@ -116,10 +149,10 @@ export const VechileItem: React.FC<CarItemProps> = ({
                     <Entypo name="images" size={16} color="#FFF" />
                 </TouchableOpacity>
 
-                {/* <TouchableOpacity style={styles.callButton} onPress={onShowVideo}>
+                <TouchableOpacity style={styles.callButton} onPress={onShowVideo}>
                     <Text style={styles.callText}>عرض الفيديو</Text>
                     <AntDesign name="camera" size={16} color="#FFF" />
-                </TouchableOpacity> */}
+                </TouchableOpacity>
 
                 <TouchableOpacity style={styles.callButton} onPress={handleCall}>
                     <Text style={styles.callText}>تواصل </Text>
@@ -130,78 +163,3 @@ export const VechileItem: React.FC<CarItemProps> = ({
         </View>
     );
 };
-
-const styles = StyleSheet.create({
-    card: {
-        backgroundColor: "#DDDDDD",
-        borderRadius: 10,
-        marginBottom: 15,
-        padding: 10,
-        elevation: 3,
-    },
-    row: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-    },
-    carDetails: {
-        width: "50%",
-        alignItems: 'flex-end',
-        paddingHorizontal: 10
-    },
-    carName: {
-        fontFamily: "Bold",
-        fontSize: 16,
-        marginBottom: 5,
-    },
-    carHint: {
-        color: "#888",
-        fontSize: 12,
-        marginBottom: 5,
-    },
-    info: {
-        color: "#333",
-        fontSize: 14,
-        marginBottom: 3,
-    },
-    highlight: {
-        color: "#4A148C",
-        fontWeight: "bold",
-    },
-    carImage: {
-        width: "100%",
-        height: "100%",
-        borderRadius: 10,
-    },
-    footer: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        paddingVertical: 10,
-    },
-    price: {
-        color: "#4A148C",
-        fontFamily: "Bold",
-        fontSize: 16,
-    },
-    callButton: {
-        backgroundColor: "#4A148C",
-        borderRadius: 10,
-        paddingHorizontal: 10,
-        paddingVertical: 8,
-        flexDirection: "row",
-        alignItems: "center",
-        columnGap: 8,
-    },
-    callText: {
-        color: "#FFF",
-        fontSize: 14,
-        fontFamily: "Bold",
-    },
-    actions: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        paddingHorizontal: 10,
-        columnGap: 5,
-        paddingVertical: 10,
-    },
-});

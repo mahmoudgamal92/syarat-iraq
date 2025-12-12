@@ -2,11 +2,11 @@ import React, { useEffect } from 'react';
 import {
     View,
     FlatList,
-    Linking,
 } from 'react-native';
 import { BaseLayout, Header, Loader, Tabber, ImageList, CarOptions, VechileItem, EmptyListComponent } from '@components';
 import { useMechanism } from '@hooks';
 import { ACTION, carFilters } from '@types';
+import { openUrl } from '@utils';
 
 export const VechileListScreen = ({ route, navigation }) => {
     const { type, filters } = route?.params ?? {};
@@ -38,53 +38,28 @@ export const VechileListScreen = ({ route, navigation }) => {
         }, []);
 
 
-
-    const openVideoUrl = async (url) => {
-        if (!url || typeof url !== "string") {
-            alert("الرابط غير صالح");
-            return;
-        }
-
-        try {
-            const supported = await Linking.canOpenURL(url);
-
-            if (supported) {
-                await Linking.openURL(url);
-            } else {
-                alert("لا يمكن فتح رابط الفيديو");
-            }
-
-        } catch (error) {
-            alert("حدث خطأ أثناء محاولة فتح الرابط");
-        }
-    };
-
-
-
-
     return (
         <BaseLayout>
             <Header />
             {loading && <Loader visible={loading} />}
             <View style={{
                 flex: 1,
-                backgroundColor: '#FFF',
-                justifyContent: 'center',
-                alignContent: 'center'
+                padding: 10,
+                backgroundColor: '#FFF'
             }}>
                 {type == ACTION.BUY &&
                     <Tabber data={carFilters} selected={selectedTab} onSelect={setSelectedTab} />
                 }
 
-
                 <ImageList
                     visible={modalVisible}
-                    title="صور السياره"
+                    title="صور الاليه"
                     images={images}
                     onClose={() => setModalVisible(false)}
                 />
 
-                <CarOptions visible={optionaVisible}
+                <CarOptions
+                    visible={optionaVisible}
                     options={options}
                     onClose={() => setOptionsVisible(false)}
                 />
@@ -99,19 +74,11 @@ export const VechileListScreen = ({ route, navigation }) => {
                                 setImages(imageArray);
                                 setModalVisible(true);
                             }}
-                            onShowVideo={() => openVideoUrl(item.vechileDescription)}
-                            onShowDetails={() => {
-                                setOptions(item.moreDetails);
-                                setOptionsVisible(true)
-                            }}
+                            onShowVideo={() => openUrl(item.mechanismDescription)}
                         />)}
                     keyExtractor={(item) => item.id.toString()}
                     ListEmptyComponent={<EmptyListComponent type='mechanism' />}
-                    contentContainerStyle={{
-                        flexGrow: 1,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                    }}
+
                 />
 
             </View>

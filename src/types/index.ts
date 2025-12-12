@@ -7,6 +7,7 @@ export type Image = {
 export interface CarRequest {
     toYear: string;
     fromYear: string;
+    carType: number; // 1 = سيارات, 2 = ميكانيكيات
     requestType: 1 | 2; // بيع = 1, استبدال = 2
     brandId: string;
     modalId: string;
@@ -28,8 +29,6 @@ export interface CarRequest {
     replaceByBrandId?: string;
     carDescription?: string;
 }
-
-
 
 export interface MechanismRequest {
     mechanismTypeId: string;

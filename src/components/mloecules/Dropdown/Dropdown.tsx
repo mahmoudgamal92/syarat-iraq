@@ -14,6 +14,7 @@ interface DropdownProps {
     placeholderStyle?: StyleProp<TextStyle>;
     labelField?: string;
     valueField?: string;
+    dropdownPosition?: 'auto' | 'top' | 'bottom';
 }
 
 export const Dropdown: React.FC<DropdownProps> = ({
@@ -21,14 +22,13 @@ export const Dropdown: React.FC<DropdownProps> = ({
     value,
     onChange,
     placeholder = '',
-    containerStyle,
-    style,
-    placeholderStyle,
     labelField = 'label',
     valueField = 'value',
+    dropdownPosition = 'auto',
 }) => {
     return (
         <RNEDropdown
+            dropdownPosition={dropdownPosition}
             style={styles.dropdown}
             placeholderStyle={styles.placeholderStyle}
             containerStyle={styles.containerStyle}

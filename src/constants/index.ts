@@ -1,6 +1,7 @@
 export const AUTHORIZATION_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IkFsYWEgT3NhbWEiLCJyb2xlIjoiU3VwZXJBZG1pbiIsIm5iZiI6MTc1NTg4Nzg0OSwiZXhwIjozMzI5MTg4Nzg0OSwiaWF0IjoxNzU1ODg3ODQ5LCJpc3MiOiJodHRwczovL3NlcnZpY2VzLnNheWFyYXQtaXJhcS5jb20vIiwiYXVkIjoiaHR0cHM6Ly9zZXJ2aWNlcy5zYXlhcmF0LWlyYXEuY29tLyJ9.783viQBeI-Jw31Sx_gN0y2XccQxgJ6GJtNb69_pICWs';
 export const baseURL = "https://services.sayarat-iraq.com/api";
 
+export const IMAGE_URL = 'https://services.sayarat-iraq.com/uploads/ImagesRepository/';
 
 export const features = [
   { id: 1, icon: 'camera-rear', text: 'كاميرا خلفية' },

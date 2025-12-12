@@ -9,6 +9,9 @@ import {
 } from "react-native";
 import { Ionicons, Entypo, FontAwesome, AntDesign } from "@expo/vector-icons";
 import moment from "moment";
+import { ACTION } from "@types";
+import { styles } from "./styles";
+import { IMAGE_URL } from "@constants";
 moment.locale('ar');
 
 interface CarImage {
@@ -32,10 +35,13 @@ interface Car {
     carLocation?: string;
     carNumber?: string;
     carImages?: CarImage[];
-    requestDate: string
+    requestDate: string;
+    replaceByBrandName?: string;
+    replaceByModalName?: string;
 }
 
 interface CarItemProps {
+    type?: string;
     car: Car;
     onShowImages: (images: string[]) => void;
     onShowVideo?: () => void;
@@ -44,6 +50,7 @@ interface CarItemProps {
 
 export const CarItem: React.FC<CarItemProps> = ({
     car,
+    type,
     onShowImages,
     onShowVideo,
     onShowDetails,
@@ -74,22 +81,24 @@ export const CarItem: React.FC<CarItemProps> = ({
             {/* Car Info */}
             <View style={styles.row}>
                 <View style={styles.carDetails}>
-                    <Text style={styles.reqDate}>{
-                        moment(car.requestDate).startOf('hour').fromNow()}</Text>
-                    <View style={{
-                        backgroundColor: '#FFD700',
-                        borderRadius: 10,
-                        paddingHorizontal: 10
-                    }}>
-                        <Text style={[styles.info, {
-                            fontFamily: 'Bold',
-                            color: '#000'
-                        }]}>
-                            السعر: <Text style={{}}>{car.carPrice}</Text> دولار
-                        </Text>
-                    </View>
+                    <Text style={styles.reqDate}>
+                        {moment(car.requestDate).startOf('hour').fromNow()}
+                    </Text>
 
-
+                    {type === ACTION.BUY &&
+                        <View style={{
+                            backgroundColor: '#FFD700',
+                            borderRadius: 10,
+                            paddingHorizontal: 10
+                        }}>
+                            <Text style={[styles.info, {
+                                fontFamily: 'Bold',
+                                color: '#000'
+                            }]}>
+                                السعر: <Text style={{}}>{car.carPrice}</Text> دولار
+                            </Text>
+                        </View>
+                    }
                     <Text style={styles.info}>
                         المحرك: <Text style={styles.highlight}>{car.carEngineSize}</Text>
                     </Text>
@@ -119,13 +128,31 @@ export const CarItem: React.FC<CarItemProps> = ({
                     <Text style={styles.info}>
                         رقم اللوحه  : <Text style={styles.highlight}>{car.carNumber}</Text>
                     </Text>
+
+
+                    {type === ACTION.EXCHANGE &&
+                        <View style={{
+                            backgroundColor: '#FFD700',
+                            padding: 5,
+                            borderRadius: 5,
+                        }}>
+
+                            <Text style={[styles.info, {
+
+                            }]}>
+                                اراوس ب   : <Text style={styles.highlight}> {car.replaceByBrandName + '-' + car.replaceByModalName}</Text>
+                            </Text>
+                        </View>
+                    }
+
+
                 </View>
 
                 <View style={{ width: "50%", height: 200 }}>
 
 
                     <Image
-                        source={{ uri: 'https://services.sayarat-iraq.com/uploads/ImagesRepository/' + car.mainImage }}
+                        source={{ uri: IMAGE_URL + car.mainImage }}
                         style={styles.carImage}
                         resizeMode="cover"
                     />
@@ -156,83 +183,6 @@ export const CarItem: React.FC<CarItemProps> = ({
                     <Ionicons name="call" size={16} color="#fff" />
                 </TouchableOpacity>
             </View>
-        </View>
+        </View >
     );
 };
-
-const styles = StyleSheet.create({
-    card: {
-        backgroundColor: "#DDDDDD",
-        borderRadius: 10,
-        marginBottom: 15,
-        padding: 10,
-        elevation: 3,
-    },
-    row: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-    },
-    carDetails: {
-        width: "50%",
-        alignItems: 'flex-end',
-        paddingHorizontal: 10
-    },
-    reqDate: {
-        fontFamily: "Regular",
-        color: 'grey',
-        fontSize: 14,
-        marginBottom: 5,
-        textAlign: 'left'
-    },
-    carHint: {
-        color: "#888",
-        fontSize: 12,
-        marginBottom: 5,
-    },
-    info: {
-        color: "#333",
-        fontSize: 14,
-        marginBottom: 3,
-    },
-    highlight: {
-        color: "#4A148C",
-        fontWeight: "bold",
-    },
-    carImage: {
-        width: "100%",
-        height: "100%",
-        borderRadius: 10,
-    },
-    footer: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        paddingVertical: 10,
-    },
-    price: {
-        color: "#4A148C",
-        fontFamily: "Bold",
-        fontSize: 16,
-    },
-    callButton: {
-        backgroundColor: "#4A148C",
-        borderRadius: 10,
-        paddingHorizontal: 10,
-        paddingVertical: 8,
-        flexDirection: "row",
-        alignItems: "center",
-        columnGap: 8,
-    },
-    callText: {
-        color: "#FFF",
-        fontSize: 8,
-        fontFamily: "Regular",
-    },
-    actions: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        paddingHorizontal: 5,
-        columnGap: 2,
-        paddingVertical: 10,
-    },
-});

@@ -28,7 +28,7 @@ export const VehicleTypeScreen = ({ route }) => {
       <View style={styles.container}>
         <Header />
         {/* Title */}
-        <Image source={require('@assets/images/louder.png')} style={styles.image} />
+        <Image source={type === 'buy' ? require('@assets/images/buy-machine.png') : require('@assets/images/sell-machine.png')} style={styles.image} />
         <Text style={styles.title}>إختر نوع الآلية</Text>
         {loading ? <Loader visible={loading} /> :
           <View style={styles.grid}>

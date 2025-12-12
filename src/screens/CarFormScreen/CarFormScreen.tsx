@@ -76,6 +76,7 @@ export const CarFormScreen = ({ route, navigation }) => {
     onSubmit: async (values) => {
       const formData = new FormData();
       formData.append('requestType', String(type === ACTION.SELL ? 1 : 2));
+      formData.append('carType', 1);
       formData.append('brandId', String(values.brandId));
       formData.append('modalId', String(values.modalId));
       formData.append('carEngineSizeId', String(values.carEngineSizeId));
@@ -163,7 +164,7 @@ export const CarFormScreen = ({ route, navigation }) => {
               data={models}
               labelField="name"
               valueField="id"
-              placeholder="الفئة"
+              placeholder="الموديل"
               value={formik.values.modalId}
               onChange={item => formik.setFieldValue("modalId", item.id)}
             />
@@ -218,6 +219,7 @@ export const CarFormScreen = ({ route, navigation }) => {
           <ValidationError<CarRequest> formik={formik} fields={['carStatus', 'clinderNumber']} />
           <View style={styles.row}>
             <Dropdown
+              dropdownPosition='top'
               data={carStatus}
               labelField="label"
               valueField="value"
@@ -226,6 +228,7 @@ export const CarFormScreen = ({ route, navigation }) => {
               onChange={item => formik.setFieldValue("carStatus", item.value)}
             />
             <Dropdown
+              dropdownPosition='top'
               data={clinders}
               labelField="label"
               valueField="value"
@@ -240,6 +243,7 @@ export const CarFormScreen = ({ route, navigation }) => {
           <View style={styles.row}>
             <Dropdown
               data={cities}
+              dropdownPosition='top'
               labelField="label"
               valueField="value"
               placeholder="رقم اللوحه"
@@ -249,6 +253,7 @@ export const CarFormScreen = ({ route, navigation }) => {
 
             <Dropdown
               data={cities}
+              dropdownPosition='top'
               labelField="label"
               valueField="value"
               placeholder="مكان التواجد"
@@ -288,7 +293,7 @@ export const CarFormScreen = ({ route, navigation }) => {
           {/* Conditional fields for sell / other */}
           {type !== ACTION.BUY && (
             <>
-              <ValidationError<CarRequest> formik={formik} fields={['carYear']} />
+              <ValidationError<CarRequest> formik={formik} fields={['carYear', 'phoneNumber']} />
               <View style={styles.row}>
                 <TextInput
                   style={styles.input}
@@ -298,9 +303,6 @@ export const CarFormScreen = ({ route, navigation }) => {
                   keyboardType="numeric"
                   placeholderTextColor={'#999'}
                 />
-              </View>
-              <ValidationError<CarRequest> formik={formik} fields={['phoneNumber']} />
-              <View style={styles.row}>
                 <TextInput
                   style={styles.input}
                   placeholder="رقم الهاتف"
@@ -321,6 +323,7 @@ export const CarFormScreen = ({ route, navigation }) => {
               <View style={styles.row}>
                 <TextInput
                   style={styles.input}
+
                   placeholder="شكد ماشيه السياره"
                   value={formik.values.carOdometer?.toString()}
                   onChangeText={formik.handleChange("carOdometer")}
@@ -347,6 +350,28 @@ export const CarFormScreen = ({ route, navigation }) => {
             </>
           )}
 
+          {type === ACTION.EXCHANGE && (
+            <>
+              <ValidationError<CarRequest> formik={formik} fields={['carOdometer', 'carPrice']} />
+              <View style={styles.row}>
+                <TextInput
+                  style={styles.input}
+                  placeholder="شكد ماشيه السياره"
+                  value={formik.values.carOdometer?.toString()}
+                  onChangeText={formik.handleChange("carOdometer")}
+                  keyboardType="numeric"
+                  placeholderTextColor={'#999'}
+                  returnKeyType="done"
+                  onSubmitEditing={() => {
+                    scrollRef.current?.scrollToEnd({ animated: true });
+                  }}
+                />
+              </View>
+            </>
+          )}
+
+
+
           {/* EXCHANGEe field */}
           {type === ACTION.EXCHANGE && (
             <View>
@@ -363,22 +388,23 @@ export const CarFormScreen = ({ route, navigation }) => {
               <ValidationError<CarRequest> formik={formik} fields={['replaceByBrandId', 'replaceByModalId']} />
               <View style={styles.row}>
                 <Dropdown
+                  dropdownPosition='top'
                   data={brands}
                   labelField="name"
                   valueField="id"
                   placeholder="العلامه التجاريه"
-                  value={formik.values.brandId}
+                  value={formik.values.replaceByBrandId}
                   onChange={item => {
                     formik.setFieldValue("replaceByBrandId", item.id);
-                    getModels(item.id);
                   }}
                 />
                 <Dropdown
+                  dropdownPosition='top'
                   data={models}
                   labelField="name"
                   valueField="id"
                   placeholder="الموديل"
-                  value={formik.values.modalId}
+                  value={formik.values.replaceByModalId}
                   onChange={item => formik.setFieldValue("replaceByModalId", item.id)}
                 />
 
@@ -386,7 +412,7 @@ export const CarFormScreen = ({ route, navigation }) => {
             </View>
           )}
           {/* Images */}
-          {type === ACTION.SELL && (
+          {type === ACTION.SELL || type === ACTION.EXCHANGE && (
             <View style={styles.formContainer}>
               {images.length > 0 ? (
                 <>

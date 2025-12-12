@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { MechanismRequest } from '@types';
 import { useToast } from '@context';
-
+import { useNavigation } from '@react-navigation/native';
 import {
     brandService,
     modelService,
@@ -10,8 +10,11 @@ import {
     typesService,
     engineTypeService,
 } from '@services/mechanisms';
+import { Alert } from 'react-native';
 
 export const useMechanism = () => {
+    const { goBack } = useNavigation();
+
     const { showToast } = useToast();
     const [loading, setLoading] = useState<boolean>(false);
     const [brands, setBrands] = useState([]);
@@ -89,8 +92,11 @@ export const useMechanism = () => {
                 setLoading(false);
                 return;
             }
-            alert('Success');
             setLoading(false);
+            Alert.alert('تم الارسال', `تم استلام طلبكم وسنتواصل معكم على الواتس اب في أقرب وقت
+شكرا لإختياركم تطبيق سيارات واليات العراق`);
+            goBack();
+
         },
         [],
     );
