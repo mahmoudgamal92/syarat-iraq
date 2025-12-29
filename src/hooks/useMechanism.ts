@@ -14,7 +14,6 @@ import { Alert } from 'react-native';
 
 export const useMechanism = () => {
     const { goBack } = useNavigation();
-
     const { showToast } = useToast();
     const [loading, setLoading] = useState<boolean>(false);
     const [brands, setBrands] = useState([]);

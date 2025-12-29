@@ -41,7 +41,7 @@ export const CarOptions: React.FC<ImageListProps> = ({
                             <AntDesign name="close" size={24} color="black" />
                         </TouchableOpacity>
 
-                        <Text style={styles.title}>{'مميزات السياره '}</Text>
+                        <Text style={styles.title}>{'باقي المواصفات'}</Text>
                     </View>
 
                     {/* Images List */}
@@ -58,7 +58,7 @@ export const CarOptions: React.FC<ImageListProps> = ({
                                         text={item}
                                         onPress={() => { }}
                                         icon="car"
-                                        selected
+                                        selected={true}
                                     />
                                 </View>
 

@@ -23,11 +23,13 @@ export const OptionItem = ({
       <AntDesign
         name={icon}
         size={30}
-        color={selected ? '#FFF' : '#4A4A4A'} // Change icon color
+        color={selected ? '#FFF' : '#4A4A4A'}
       />
       <Text
         style={[
           styles.featureText,
+          { color: selected ? '#FFF' : '#4A4A4A' },
+
         ]}
       >
         {text}

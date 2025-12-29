@@ -395,6 +395,7 @@ export const CarFormScreen = ({ route, navigation }) => {
                   placeholder="العلامه التجاريه"
                   value={formik.values.replaceByBrandId}
                   onChange={item => {
+                    getModels(item.id);
                     formik.setFieldValue("replaceByBrandId", item.id);
                   }}
                 />
@@ -412,7 +413,7 @@ export const CarFormScreen = ({ route, navigation }) => {
             </View>
           )}
           {/* Images */}
-          {type === ACTION.SELL || type === ACTION.EXCHANGE && (
+          {type !== ACTION.BUY && (
             <View style={styles.formContainer}>
               {images.length > 0 ? (
                 <>
@@ -464,7 +465,7 @@ export const CarFormScreen = ({ route, navigation }) => {
 
 
           {/* Additional Options */}
-          {type === ACTION.SELL && (
+          {type !== ACTION.BUY && (
             <View style={styles.formContainer}>
               {options.length > 0 ?
                 <>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, ScrollView, ActivityIndicator } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { View, Text, TextInput, TouchableOpacity, Image, ScrollView, ActivityIndicator, ImageBackground } from 'react-native';
+import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { useFormik } from 'formik';
 
@@ -276,13 +276,42 @@ export const VehicleFormScreen = ({ route, navigation }) => {
                         <View style={styles.formContainer}>
                             {images.length > 0 ? (
                                 <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                                    {images.map((img, index) => (
+                                    {/* {images.map((img, index) => (
                                         <Image
                                             key={index}
                                             source={{ uri: img.uri }}
                                             style={{ width: 100, height: 100, marginRight: 10, borderRadius: 8 }}
                                         />
+                                    ))} */}
+
+
+                                    {images.map((img, index) => (
+                                        <View>
+                                            <ImageBackground
+                                                key={index}
+                                                source={{ uri: img.uri }}
+                                                style={{ width: 100, height: 100, marginRight: 10, }}
+                                                imageStyle={{ borderRadius: 8 }}
+                                            >
+                                                <TouchableOpacity
+                                                    style={{
+                                                        padding: 3
+                                                    }}
+                                                    onPress={() => {
+                                                        const newImages = images.filter((_, i) => i !== index);
+                                                        setImages(newImages);
+                                                        formik.setFieldValue("carImages", newImages);
+                                                    }
+                                                    }>
+                                                    <FontAwesome name="minus-circle" size={24} color="red" />
+                                                </TouchableOpacity>
+                                            </ImageBackground>
+                                        </View>
+
+
                                     ))}
+
+
                                 </ScrollView>
                             ) : (
                                 <TouchableOpacity onPress={pickImage} style={{
@@ -290,7 +319,7 @@ export const VehicleFormScreen = ({ route, navigation }) => {
                                     justifyContent: 'center'
                                 }}>
                                     <Ionicons name="image-outline" size={60} color="grey" />
-                                    <Text style={{ color: "grey" }}>قم برفع الصور بحد اقصي 15 صور</Text>
+                                    <Text style={{ color: "grey", fontFamily: "Regular" }}>قم برفع الصور بحد اقصي 15 صور</Text>
                                 </TouchableOpacity>
                             )}
                         </View>

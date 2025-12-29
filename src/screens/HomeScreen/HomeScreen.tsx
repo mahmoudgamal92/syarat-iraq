@@ -7,6 +7,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import { styles } from './styles';
 import { SCREENS } from '@navigation';
 import { useNetwork } from '@hooks';
+import { ACTION } from '@types';
 
 export const HomeScreen = ({ navigation }) => {
   const isConnected = useNetwork();
@@ -73,18 +74,18 @@ export const HomeScreen = ({ navigation }) => {
 
             <View style={styles.buttonsContainer}>
               <Categorey
-                onPress={() => navigation.navigate(SCREENS.CARS.LIST, { type: 'exchange' })}
+                onPress={() => navigation.navigate(SCREENS.CARS.LIST, { type: ACTION.EXCHANGE })}
                 text={'آراوس سيارتي'}
                 icon={require('@assets/images/exchange.png')}
               />
 
               <Categorey
-                onPress={() => navigation.navigate(SCREENS.CARS.FORM, { type: 'buy' })}
+                onPress={() => navigation.navigate(SCREENS.CARS.FORM, { type: ACTION.BUY })}
                 text={'اشتري سياره'}
                 icon={require('@assets/images/buy.png')}
               />
               <Categorey
-                onPress={() => navigation.navigate(SCREENS.CARS.FORM, { type: 'sell' })}
+                onPress={() => navigation.navigate(SCREENS.CARS.FORM, { type: ACTION.SELL })}
                 text={'ابيع سيارتي'}
                 icon={require('@assets/images/sell.png')}
               />
