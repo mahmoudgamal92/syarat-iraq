@@ -74,11 +74,15 @@ export const HomeScreen = ({ navigation }) => {
 
             <View style={styles.buttonsContainer}>
               <Categorey
+                onPress={() => navigation.navigate(SCREENS.INSTALLMENT.LIST)}
+                text={'عروض التقسيط'}
+                icon={require('@assets/images/exchange.png')}
+              />
+              <Categorey
                 onPress={() => navigation.navigate(SCREENS.CARS.LIST, { type: ACTION.EXCHANGE })}
                 text={'آراوس سيارتي'}
                 icon={require('@assets/images/exchange.png')}
               />
-
               <Categorey
                 onPress={() => navigation.navigate(SCREENS.CARS.FORM, { type: ACTION.BUY })}
                 text={'اشتري سياره'}

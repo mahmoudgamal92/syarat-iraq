@@ -2,6 +2,7 @@ import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   formContainer: {
+    flex: 1,
     backgroundColor: '#FFFFFF',
     borderRadius: 8,
     padding: 16,
@@ -17,7 +18,7 @@ export const styles = StyleSheet.create({
     marginBottom: 10,
   },
 
-   Button: {
+  Button: {
     backgroundColor: '#4caf50',
     borderRadius: 8,
     padding: 12,

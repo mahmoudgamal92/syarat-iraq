@@ -16,5 +16,10 @@ export const SCREENS = {
         LIST: 'VechileListScreen',
         TYPE: 'VechileTypeScreen',
     },
+    INSTALLMENT:
+    {
+        FORM: 'InstallmentFormScreen',
+        LIST: 'InstallmentListScreen',
+    },
 
 } as const;

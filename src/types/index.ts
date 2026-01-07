@@ -28,6 +28,12 @@ export interface CarRequest {
     replaceByModalId?: string;
     replaceByBrandId?: string;
     carDescription?: string;
+    // Installment fields
+    paymentDuration: string,
+    deposit: string,
+    bankName: string,
+    isSponser: boolean,
+    isEmployee: boolean,
 }
 
 export interface MechanismRequest {

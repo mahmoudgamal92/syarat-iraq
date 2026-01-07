@@ -12,3 +12,5 @@ export * from './CarItem/CarItem';
 export * from './VechileItem/VechileItem';
 export * from './EmptyListComponent/EmptyListComponent';
 export * from './OptionsSheet/OptionsSheet'
+export * from './CarDetailsModal/CarDetailsModal'
+export * from './FiltersModal/FiltersSheet'

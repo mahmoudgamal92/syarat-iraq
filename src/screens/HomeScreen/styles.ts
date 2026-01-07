@@ -63,7 +63,7 @@ export const styles = StyleSheet.create({
   buttonsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    width: '90%',
+    width: '100%',
   },
   button: {
     alignItems: 'center',

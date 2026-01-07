@@ -94,7 +94,9 @@ export const BottomSheet = forwardRef<BottomSheetRef, BottomSheetProps>(
             {title && (
               <View>
                 <View style={styles.headerContainer}>
-                  <Text>
+                  <Text style={{
+                    fontFamily: "Bold",
+                  }}>
                     {title}
                   </Text>
                 </View>
@@ -116,13 +118,13 @@ export const BottomSheet = forwardRef<BottomSheetRef, BottomSheetProps>(
           width: 60,
         }}
         handleStyle={{
-          backgroundColor: '#FFF',
+          backgroundColor: '#DDDDDD',
           borderTopRightRadius: 14,
           borderTopLeftRadius: 14,
           paddingTop: 16,
         }}
         backdropComponent={renderBackdrop}
-        backgroundStyle={{ backgroundColor: '#FFF' }}
+        backgroundStyle={{ backgroundColor: '#DDDDDD' }}
         ref={bottomSheetModalRef}
         snapPoints={snapPoints}
         onDismiss={onDismissed}
@@ -138,7 +140,6 @@ export const BottomSheet = forwardRef<BottomSheetRef, BottomSheetProps>(
           <View
             style={[
               styles.modalContainer,
-              { backgroundColor: '#FFF' },
             ]}>
             {children}
           </View>

@@ -52,7 +52,9 @@ export const OptionsSheet = forwardRef<OptionsSheetRef, OptionsSheetProps>(
     );
 
     return (
-      <BottomSheet ref={optionsSheetRef} title="مميزات السياره">
+      <BottomSheet
+        scroll
+        ref={optionsSheetRef} title="مميزات السياره">
         <View style={styles.formContainer}>
           <FlatList
             data={data}
@@ -60,7 +62,10 @@ export const OptionsSheet = forwardRef<OptionsSheetRef, OptionsSheetProps>(
             keyExtractor={(item) => item.id.toString()}
             numColumns={4}
             columnWrapperStyle={styles.row}
-            contentContainerStyle={styles.featureGrid}
+            contentContainerStyle={[
+              styles.featureGrid,
+            ]}
+            showsVerticalScrollIndicator={false}
           />
         </View>
 

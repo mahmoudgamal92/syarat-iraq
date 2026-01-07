@@ -76,7 +76,7 @@ export const CarFormScreen = ({ route, navigation }) => {
     onSubmit: async (values) => {
       const formData = new FormData();
       formData.append('requestType', String(type === ACTION.SELL ? 1 : 2));
-      formData.append('carType', 1);
+      formData.append('carType', '1');
       formData.append('brandId', String(values.brandId));
       formData.append('modalId', String(values.modalId));
       formData.append('carEngineSizeId', String(values.carEngineSizeId));
@@ -88,8 +88,8 @@ export const CarFormScreen = ({ route, navigation }) => {
       formData.append('carStatus', String(values.carStatus));
       formData.append('carNumber', values.carNumber);
       formData.append('carLocation', values.carLocation);
-      formData.append('carOdometer', Number(values.carOdometer));
-      formData.append('carPrice', Number(values.carPrice));
+      formData.append('carOdometer', String(values.carOdometer));
+      formData.append('carPrice', String(values.carPrice));
       formData.append('phoneNumber', values.phoneNumber);
       formData.append('replaceByModalId', String(values.replaceByModalId));
       formData.append('replaceByBrandId', String(values.replaceByBrandId));
@@ -161,10 +161,11 @@ export const CarFormScreen = ({ route, navigation }) => {
               }}
             />
             <Dropdown
+              searchable
               data={models}
               labelField="name"
               valueField="id"
-              placeholder="الموديل"
+              placeholder="الموديل + الفئه"
               value={formik.values.modalId}
               onChange={item => formik.setFieldValue("modalId", item.id)}
             />

@@ -148,8 +148,8 @@ export const useCars = () => {
                 setLoading(false);
                 return;
             }
-            setLoading(false);
             setCars(res.data.data);
+            setLoading(false);
         },
         [],
     );

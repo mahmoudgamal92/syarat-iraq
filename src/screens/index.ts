@@ -6,3 +6,5 @@ export * from './VehicleFormScreen/VehicleFormScreen';
 export * from './CarListScreen/CarListScreen';
 export * from './VehicleTypeScreen/VehicleTypeScreen';
 export * from './VechileListScreen/VechileListScreen';
+export * from './InstallmentCreateScreen/InstallmentCreateScreen';
+export * from './InstallmentListScreen/InstallmentListScreen';
