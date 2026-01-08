@@ -35,6 +35,9 @@ export const CarFormScreen = ({ route, navigation }) => {
 
   const [images, setImages] = useState<any[]>([]);
   const [options, setOptions] = useState<any[]>([]);
+
+  const [exchangeModels, setExchangeModels] = useState<any[]>([]);
+
   const optionsRef = useRef<OptionsSheetRef>(null);
   useEffect(() => {
     getBrands();
@@ -395,14 +398,15 @@ export const CarFormScreen = ({ route, navigation }) => {
                   valueField="id"
                   placeholder="العلامه التجاريه"
                   value={formik.values.replaceByBrandId}
-                  onChange={item => {
-                    getModels(item.id);
+                  onChange={async item => {
+                    const models = await getModels(item.id);
+                    setExchangeModels(models);
                     formik.setFieldValue("replaceByBrandId", item.id);
                   }}
                 />
                 <Dropdown
                   dropdownPosition='top'
-                  data={models}
+                  data={exchangeModels}
                   labelField="name"
                   valueField="id"
                   placeholder="الموديل"

@@ -22,12 +22,14 @@ export type FiltersSheetRef = {
 
 type FiltersSheetProps = {
     onApply?: (cars: any) => void;
+    onChangeOrder?: (order: string) => void;
 };
 
 export const FiltersSheet = forwardRef<
     FiltersSheetRef,
     FiltersSheetProps
 >(({ onApply }, ref) => {
+
     const filtersSheetRef = useRef<BottomSheetRef>(null);
     const [selectedFilter, setSelectedFilter] = useState<number | string>('');
     useImperativeHandle(ref, () => ({
@@ -83,8 +85,7 @@ export const FiltersSheet = forwardRef<
             ...cleanedFilters,
         });
 
-
-        onApply?.(cars?.carRequests);
+        // onApply?.(cars?.carRequests);
     };
 
     const formik = useFormik<CarRequest>({
@@ -111,6 +112,12 @@ export const FiltersSheet = forwardRef<
         extraAction?.();
         applyFilters(nextValues);
     };
+
+
+    const viewResults = () => {
+        // console.log('selectedFilter ===>', selectedFilter);
+        onApply(cars?.carRequests);
+    }
 
     return (
         <BottomSheet
@@ -277,7 +284,7 @@ export const FiltersSheet = forwardRef<
             <View>
                 <TouchableOpacity
                     style={styles.Button}
-                    onPress={() => applyFilters(formik.values)}
+                    onPress={() => viewResults()}
                 >
                     {loading ? <ActivityIndicator color="#FFF" /> :
                         <Text style={styles.ButtonText}>بحث {cars?.totalCount || 0} سياره</Text>

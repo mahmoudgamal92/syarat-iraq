@@ -36,6 +36,7 @@ interface Car {
     carNumber?: string;
     carImages?: CarImage[];
     requestDate: string;
+    brandName?: string;
     replaceByBrandName?: string;
     replaceByModalName?: string;
 }
@@ -99,11 +100,16 @@ export const CarItem: React.FC<CarItemProps> = ({
                             </Text>
                         </View>
                     }
+
                     <Text style={styles.info}>
-                        المحرك: <Text style={styles.highlight}>{car.carEngineSize}</Text>
+                        النوع : <Text style={styles.highlight}>{car.brandName}</Text>
                     </Text>
+
                     <Text style={styles.info}>
                         موديل السيارة: <Text style={styles.highlight}>{car.modalName}</Text>
+                    </Text>
+                    <Text style={styles.info}>
+                        المحرك: <Text style={styles.highlight}>{car.carEngineSize}</Text>
                     </Text>
                     <Text style={styles.info}>
                         الوارد:{" "}

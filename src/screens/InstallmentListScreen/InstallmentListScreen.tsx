@@ -17,11 +17,8 @@ export const InstallmentListScreen = ({ route, navigation }) => {
     const filtersRef = useRef<FiltersSheetRef>(null);
 
     const { type, filters } = route?.params ?? {};
-
     const { loading, cars, getCarList, getBrands, getModels } = useCars();
     const [carList, setCarList] = React.useState<any[]>([]);
-    console.log('carList ===>', carList);
-
     const [modalVisible, setModalVisible] = React.useState(false);
     const [images, setImages] = React.useState<string[]>([]);
 
@@ -103,7 +100,7 @@ export const InstallmentListScreen = ({ route, navigation }) => {
 
                 <ImageList
                     visible={modalVisible}
-                    title="صور الاليه"
+                    title="صور السياره"
                     images={images}
                     onClose={() => setModalVisible(false)}
                 />
@@ -135,7 +132,11 @@ export const InstallmentListScreen = ({ route, navigation }) => {
                 />
             </View>
             {/* setCarList(cars) */}
-            <FiltersSheet ref={filtersRef} onApply={(cars) => console.log('Filtered cars:', cars)} />
+            <FiltersSheet ref={filtersRef} onApply={(cars) => {
+                setCarList(cars);
+                filtersRef.current?.close();
+            }
+            } />
         </BaseLayout>
     );
 };

@@ -55,6 +55,7 @@ export const useCars = () => {
             }
             setModels(res?.data?.data || []);
             setLoading(false);
+            return res?.data?.data || [];
         },
         [],
     );
