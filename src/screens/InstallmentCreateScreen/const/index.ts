@@ -34,7 +34,7 @@ const sellSchema = Yup.object().shape({
     carPrice: Yup.number().required("ادخل السعر").min(0, "السعر يجب أن يكون أكبر من صفر"),
     phoneNumber: Yup.string().required("ادخل رقم الهاتف"),
     carImages: Yup.array().min(1, "اختر صورة واحدة على الأقل"),
-    paymentDuration: Yup.string().required("ادخل مدة التقسيط"),
+    paymentPeriod: Yup.string().required("ادخل مدة التقسيط"),
     deposit: Yup.string().required("ادخل مبلغ العربون"),
     bankName: Yup.string().required("ادخل اسم البنك"),
     isSponser: Yup.boolean().required("حدد اذا كنت كفيل"),
@@ -59,7 +59,7 @@ export const getValidationSchema = (type: string) => {
 
 
 export const initialValues: CarRequest = {
-    paymentDuration: "",
+    paymentPeriod: "",
     deposit: "",
     bankName: "",
     isSponser: false,

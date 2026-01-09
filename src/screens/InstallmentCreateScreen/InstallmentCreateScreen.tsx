@@ -99,7 +99,7 @@ export const InstallmentFormScreen = ({ route, navigation }) => {
         values.carImages.forEach((img, index) => {
           formData.append('carImages', { uri: img.uri, type: img.type, name: img.name } as any);
         }));
-      formData.append('paymentDuration', values.paymentDuration);
+      formData.append('paymentPeriod', values.paymentPeriod);
       formData.append('deposit', values.deposit);
       formData.append('bankName', values.bankName);
       formData.append('isSponser', values.isSponser ? 'true' : 'false');
@@ -133,13 +133,13 @@ export const InstallmentFormScreen = ({ route, navigation }) => {
           </Text>
 
           <>
-            <ValidationError<CarRequest> formik={formik} fields={['paymentDuration', 'deposit']} />
+            <ValidationError<CarRequest> formik={formik} fields={['paymentPeriod', 'deposit']} />
             <View style={styles.row}>
               <TextInput
                 style={styles.input}
                 placeholder="مده التسديد"
-                value={formik.values.paymentDuration}
-                onChangeText={formik.handleChange("paymentDuration")}
+                value={formik.values.paymentPeriod}
+                onChangeText={formik.handleChange("paymentPeriod")}
                 keyboardType="numeric"
                 placeholderTextColor={'#999'}
 

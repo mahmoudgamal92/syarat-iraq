@@ -6,7 +6,7 @@ import {
     TouchableOpacity
 } from 'react-native';
 import { Entypo, FontAwesome } from '@expo/vector-icons';
-import { BaseLayout, Header, Loader, ImageList, EmptyListComponent, ActionButton, CarItem, CarDetailsModal } from '@components';
+import { BaseLayout, Header, Loader, ImageList, EmptyListComponent, ActionButton, CarItem, CarDetailsModal, InstallmentItem } from '@components';
 import { useCars } from '@hooks';
 import { ACTION, carFilters } from '@types';
 import { openUrl } from '@utils';
@@ -114,7 +114,7 @@ export const InstallmentListScreen = ({ route, navigation }) => {
                 <FlatList
                     data={carList}
                     renderItem={({ item }) => (
-                        <CarItem
+                        <InstallmentItem
                             key={item.id}
                             car={item}
                             onShowImages={(imageArray) => {

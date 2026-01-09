@@ -13,4 +13,5 @@ export * from './VechileItem/VechileItem';
 export * from './EmptyListComponent/EmptyListComponent';
 export * from './OptionsSheet/OptionsSheet'
 export * from './CarDetailsModal/CarDetailsModal'
-export * from './FiltersModal/FiltersSheet'
+export * from './FiltersModal/FiltersSheet';
+export * from './InstallmentItem/InstallmentItem';

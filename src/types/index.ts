@@ -29,7 +29,7 @@ export interface CarRequest {
     replaceByBrandId?: string;
     carDescription?: string;
     // Installment fields
-    paymentDuration: string,
+    paymentPeriod: string,
     deposit: string,
     bankName: string,
     isSponser: boolean,
