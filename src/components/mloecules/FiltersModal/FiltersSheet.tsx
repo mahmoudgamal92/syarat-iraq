@@ -6,7 +6,7 @@ import React, {
     useState,
 } from 'react';
 import { View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { BottomSheet, BottomSheetRef, Dropdown, Loader, Tabber } from '@components';
+import { BottomSheet, BottomSheetRef, Dropdown, Tabber } from '@components';
 import { useFormik } from 'formik';
 
 import { useCars } from '@hooks';
@@ -21,22 +21,27 @@ export type FiltersSheetRef = {
 };
 
 type FiltersSheetProps = {
-    onApply?: (cars: any) => void;
-    onChangeOrder?: (order: string) => void;
+    onApply?: (cars: any[]) => void;
 };
 
 export const FiltersSheet = forwardRef<
     FiltersSheetRef,
     FiltersSheetProps
 >(({ onApply }, ref) => {
-
+    /* ------------------------ */
+    /* 🔹 Refs & State          */
+    /* ------------------------ */
     const filtersSheetRef = useRef<BottomSheetRef>(null);
     const [selectedFilter, setSelectedFilter] = useState<number | string>('');
+
     useImperativeHandle(ref, () => ({
         open: () => filtersSheetRef.current?.open(),
         close: () => filtersSheetRef.current?.close(),
     }));
 
+    /* ------------------------ */
+    /* 🔹 Data hooks            */
+    /* ------------------------ */
     const {
         loading,
         brands,
@@ -63,7 +68,7 @@ export const FiltersSheet = forwardRef<
     }, []);
 
     /* ------------------------ */
-    /* 🔹 Apply filters logic   */
+    /* 🔹 Apply filters (API)   */
     /* ------------------------ */
     const applyFilters = async (values: CarRequest) => {
         const cleanedFilters = Object.fromEntries(
@@ -84,10 +89,11 @@ export const FiltersSheet = forwardRef<
             PurchaseType: 3,
             ...cleanedFilters,
         });
-
-        // onApply?.(cars?.carRequests);
     };
 
+    /* ------------------------ */
+    /* 🔹 Formik                */
+    /* ------------------------ */
     const formik = useFormik<CarRequest>({
         initialValues,
         validateOnChange: false,
@@ -96,7 +102,7 @@ export const FiltersSheet = forwardRef<
     });
 
     /* ------------------------ */
-    /* 🔹 Change + search       */
+    /* 🔹 Change + Search       */
     /* ------------------------ */
     const handleChangeAndSearch = (
         field: keyof CarRequest,
@@ -113,12 +119,48 @@ export const FiltersSheet = forwardRef<
         applyFilters(nextValues);
     };
 
+    /* ------------------------ */
+    /* 🔹 Sorting by Tabber     */
+    /* ------------------------ */
+    const sortCarsByTab = (list: any[], filter: number | string) => {
+        if (!list || list.length === 0) return list;
 
+        const sorted = [...list];
+
+        switch (filter) {
+            case 1:
+                // أقل سعر
+                return sorted.sort((a, b) => a.carPrice - b.carPrice);
+
+            case 2:
+                // أعلى سعر
+                return sorted.sort((a, b) => b.carPrice - a.carPrice);
+
+            case 0:
+                // أقل كيلومترات
+                return sorted.sort((a, b) => a.carOdometer - b.carOdometer);
+
+            default:
+                return sorted;
+        }
+    };
+
+    /* ------------------------ */
+    /* 🔹 Apply result to list  */
+    /* ------------------------ */
     const viewResults = () => {
-        // console.log('selectedFilter ===>', selectedFilter);
-        onApply(cars?.carRequests);
-    }
+        const sortedCars = sortCarsByTab(
+            cars?.carRequests || [],
+            selectedFilter
+        );
 
+        onApply?.(sortedCars);
+        filtersSheetRef.current?.close();
+    };
+
+    /* ------------------------ */
+    /* 🔹 Render                */
+    /* ------------------------ */
     return (
         <BottomSheet
             scroll
@@ -133,7 +175,6 @@ export const FiltersSheet = forwardRef<
                 />
 
                 <View style={styles.row}>
-
                     <Dropdown
                         data={models}
                         labelField="name"
@@ -144,6 +185,7 @@ export const FiltersSheet = forwardRef<
                             handleChangeAndSearch('modalId', item.id)
                         }
                     />
+
                     <Dropdown
                         data={brands}
                         labelField="name"
@@ -158,7 +200,6 @@ export const FiltersSheet = forwardRef<
                             )
                         }
                     />
-
                 </View>
 
                 <View style={styles.row}>
@@ -169,10 +210,7 @@ export const FiltersSheet = forwardRef<
                         placeholder="حجم المحرك"
                         value={formik.values.carEngineSizeId}
                         onChange={item =>
-                            handleChangeAndSearch(
-                                'carEngineSizeId',
-                                item.id
-                            )
+                            handleChangeAndSearch('carEngineSizeId', item.id)
                         }
                     />
 
@@ -224,10 +262,7 @@ export const FiltersSheet = forwardRef<
                         placeholder="حالة السيارة"
                         value={formik.values.carStatus}
                         onChange={item =>
-                            handleChangeAndSearch(
-                                'carStatus',
-                                item.value
-                            )
+                            handleChangeAndSearch('carStatus', item.value)
                         }
                     />
 
@@ -280,15 +315,18 @@ export const FiltersSheet = forwardRef<
                 </View>
             </View>
 
-            {/* optional manual search */}
             <View>
                 <TouchableOpacity
                     style={styles.Button}
-                    onPress={() => viewResults()}
+                    onPress={viewResults}
                 >
-                    {loading ? <ActivityIndicator color="#FFF" /> :
-                        <Text style={styles.ButtonText}>بحث {cars?.totalCount || 0} سياره</Text>
-                    }
+                    {loading ? (
+                        <ActivityIndicator color="#FFF" />
+                    ) : (
+                        <Text style={styles.ButtonText}>
+                            بحث {cars?.totalCount || 0} سياره
+                        </Text>
+                    )}
                 </TouchableOpacity>
             </View>
         </BottomSheet>

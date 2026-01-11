@@ -12,6 +12,7 @@ import moment from "moment";
 import { ACTION } from "@types";
 import { styles } from "./styles";
 import { IMAGE_URL } from "@constants";
+import { timeAgo } from "@utils";
 moment.locale('ar');
 
 interface CarImage {
@@ -39,6 +40,12 @@ interface Car {
     brandName?: string;
     replaceByBrandName?: string;
     replaceByModalName?: string;
+    carYear?: string;
+    paymentPeriod?: string;
+    deposit?: string;
+    bankName?: string;
+    isEmployee?: boolean;
+    isSponsor?: boolean;
 }
 
 interface InstallmentItemProps {
@@ -83,7 +90,7 @@ export const InstallmentItem: React.FC<InstallmentItemProps> = ({
             <View style={styles.row}>
                 <View style={styles.carDetails}>
                     <Text style={styles.reqDate}>
-                        {moment(car.requestDate).startOf('hour').fromNow()}
+                        {timeAgo(car.requestDate)}
                     </Text>
 
                     <View style={{
