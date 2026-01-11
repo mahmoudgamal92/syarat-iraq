@@ -78,7 +78,7 @@ export const InstallmentListScreen = ({ route, navigation }) => {
                             flexDirection: 'row',
                             alignItems: 'center',
                             backgroundColor: "#7B1FA2",
-                            width: 55,
+                            width: 80,
                             height: 55,
                             borderRadius: 50,
                             justifyContent: 'center',
@@ -86,13 +86,24 @@ export const InstallmentListScreen = ({ route, navigation }) => {
                             borderColor: '#000'
                         }}>
                         <FontAwesome name="filter" size={24} color="#FFF" />
+
+                        <Text style={{
+                            fontSize: 13,
+                            color: '#FFF',
+                            textAlign: 'center',
+                            fontFamily: 'Bold',
+                            marginHorizontal: 5,
+                        }}>فلتر</Text>
+
                     </TouchableOpacity>
                     <ActionButton
                         title="اضغط هنا لاضافه سيازتك بالتقسيط  "
                         onPress={() => navigation.navigate(SCREENS.INSTALLMENT.FORM)}
                         icon={<Entypo name="circle-with-plus" size={30} color="#FFF" />}
-                        containerStyle={{ width: '85%', height: 55, borderRadius: 30 }}
+                        containerStyle={{ width: '80%', height: 55, borderRadius: 30 }}
                         textStyle={{ fontSize: 12 }}
+                        color='#CC5801'
+                        subColor='#8D4003'
                     />
 
                 </View>
