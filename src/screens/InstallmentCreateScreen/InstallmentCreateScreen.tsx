@@ -140,7 +140,6 @@ export const InstallmentFormScreen = ({ route, navigation }) => {
                 placeholder="مده التسديد"
                 value={formik.values.paymentPeriod}
                 onChangeText={formik.handleChange("paymentPeriod")}
-                keyboardType="numeric"
                 placeholderTextColor={'#999'}
 
               />
@@ -149,7 +148,6 @@ export const InstallmentFormScreen = ({ route, navigation }) => {
                 placeholder="دفعه مقدمه"
                 value={formik.values.deposit}
                 onChangeText={formik.handleChange("deposit")}
-                keyboardType="numeric"
                 placeholderTextColor={'#999'}
 
               />
