@@ -145,11 +145,11 @@ export const useCars = () => {
             setLoading(true);
             const res = await carListService(req);
             if (res.status !== 200) {
-                showToast('حدث خطأ ما، الرجاء المحاولة وقت اخر', 'error')
+                showToast('حدث خطأ ما، الرجاء المحاولة وقت اخر', 'error');
                 setLoading(false);
                 return;
             }
-            setCars(res.data.data);
+            setCars(res.data.data.carRequests);
             setLoading(false);
         },
         [],

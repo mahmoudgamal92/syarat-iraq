@@ -2,7 +2,7 @@
   "expo": {
     "name": "سيارات وآليات العراق",
     "slug": "sayarat",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -12,7 +12,7 @@
       "backgroundColor": "#d9d9d9"
     },
     "ios": {
-      "buildNumber": "7",
+      "buildNumber": "8",
       "supportsTablet": true,
       "bundleIdentifier": "conm.syaratiraq.app",
       "infoPlist": {
@@ -20,7 +20,7 @@
       }
     },
     "android": {
-      "versionCode": 7,
+      "versionCode": 8,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#d9d9d9"
